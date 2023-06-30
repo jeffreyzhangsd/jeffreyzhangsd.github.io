@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/jeffreyzhangsd.github.io/static/css/main.073c9b0a.css",
-    "main.js": "/jeffreyzhangsd.github.io/static/js/main.70f5a203.js",
+    "main.css": "/jeffreyzhangsd.github.io/static/css/main.e6c13ad2.css",
+    "main.js": "/jeffreyzhangsd.github.io/static/js/main.5acfb0d6.js",
     "static/js/787.28cb0dcd.chunk.js": "/jeffreyzhangsd.github.io/static/js/787.28cb0dcd.chunk.js",
-    "static/media/logo.svg": "/jeffreyzhangsd.github.io/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/jeffreyzhangsd.github.io/index.html",
-    "main.073c9b0a.css.map": "/jeffreyzhangsd.github.io/static/css/main.073c9b0a.css.map",
-    "main.70f5a203.js.map": "/jeffreyzhangsd.github.io/static/js/main.70f5a203.js.map",
+    "main.e6c13ad2.css.map": "/jeffreyzhangsd.github.io/static/css/main.e6c13ad2.css.map",
+    "main.5acfb0d6.js.map": "/jeffreyzhangsd.github.io/static/js/main.5acfb0d6.js.map",
     "787.28cb0dcd.chunk.js.map": "/jeffreyzhangsd.github.io/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.70f5a203.js"
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.5acfb0d6.js"
   ]
 }
