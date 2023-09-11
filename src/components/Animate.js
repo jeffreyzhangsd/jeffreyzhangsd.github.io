@@ -13,7 +13,7 @@ const createAnimation = () => {
 	let rendered = true;
 	let w = container.offsetWidth;
 	let h = container.offsetHeight;
-	console.log(w, h);
+	// console.log(w, h);
 	renderer.setSize(w, h);
 
 	if (rendered === true) {
@@ -31,7 +31,7 @@ const createAnimation = () => {
 			renderer.setSize(width, height);
 			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
-			console.log(canvas, width, height);
+			// console.log(canvas, width, height);
 		}
 	};
 
