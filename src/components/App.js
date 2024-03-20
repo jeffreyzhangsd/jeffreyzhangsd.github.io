@@ -30,6 +30,8 @@ function App() {
 				return <AboutMe changeView={(v) => changeView(v)} />;
 			case "Contact":
 				return <Contact changeView={(v) => changeView(v)} />;
+			default:
+				return <Home changeView={(v) => changeView(v)} />;
 		}
 	};
 
@@ -37,7 +39,9 @@ function App() {
 		<>
 			<div id="main">
 				<div className="container">
-					<div className="canvas-container" id="canvas"></div>
+					<div className="canvas-container" id="canvas">
+						<canvas className="canvas-container" id="webgl-canvas"></canvas>
+					</div>
 					<div className="header">
 						<h1>Jeffrey Zhang</h1>
 						<p>Full Stack Software Engineer</p>

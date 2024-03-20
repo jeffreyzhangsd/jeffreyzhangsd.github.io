@@ -1,72 +1,61 @@
 import * as THREE from "three";
+import earth from "../Earth/EarthMask_2500x1250.jpg";
+import stars from "../Earth/starfield.png";
 
 const createAnimation = () => {
-	// set scene and camera position
 	const scene = new THREE.Scene();
-	const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-	camera.position.set(0, 0, 15);
-	camera.lookAt(0, 0, 0);
-
+	const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+	camera.position.z = 250;
+	camera.position.x = 150;
+	camera.position.y = 25;
 	const renderer = new THREE.WebGLRenderer();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	document.getElementById("canvas").appendChild(renderer.domElement);
 
-	let container = document.getElementById("canvas");
-	let rendered = true;
-	let w = container.offsetWidth;
-	let h = container.offsetHeight;
-	// console.log(w, h);
-	renderer.setSize(w, h);
+	let textureLoader = new THREE.TextureLoader();
+	const texture = textureLoader.load(earth);
 
-	if (rendered === true) {
-		container.appendChild(renderer.domElement);
-		rendered = false;
-	}
+	const geometry = new THREE.SphereGeometry(25, 32, 32); // (radius, widthSegments, heightSegments)
+	const material = new THREE.MeshBasicMaterial({ map: texture });
+	const sphere = new THREE.Mesh(geometry, material);
+	scene.add(sphere);
 
-	const resizeCanvas = () => {
-		const canvas = renderer.domElement;
-		let container = document.getElementById("canvas");
-		const width = container.clientWidth;
-		const height = container.clientHeight;
+	// // Galaxy
+	let galaxyGeometry = new THREE.SphereGeometry(300, 90, 90);
+	let galaxyMaterial = new THREE.MeshBasicMaterial({
+		side: THREE.BackSide,
+	});
+	let galaxy = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
+	galaxy.position.set(150, 25, 250);
 
-		if (canvas.width !== width || canvas.height !== height) {
-			renderer.setSize(width, height);
-			camera.aspect = width / height;
-			camera.updateProjectionMatrix();
-			// console.log(canvas, width, height);
-		}
-	};
-
-	const geometry = new THREE.BoxGeometry(1, 1, 1); // vertices for cube
-	const points = [];
-	points.push(new THREE.Vector3(-10, 0, 0));
-	points.push(new THREE.Vector3(0, 10, 0));
-	points.push(new THREE.Vector3(10, 0, 0));
-	const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
-
-	const material = new THREE.MeshBasicMaterial({
-		color: 0x00ff00,
-	}); // material to color cube
-	const lineMat = new THREE.LineBasicMaterial({
-		color: 0x0000ff,
+	// // Load Galaxy Textures
+	textureLoader.crossOrigin = true;
+	textureLoader.load(stars, function (texture) {
+		galaxyMaterial.map = texture;
+		galaxy.material.transparent = true; // Enable transparency
+		galaxy.material.opacity = 0.2; // Set opacity to 20%
+		scene.add(galaxy);
 	});
 
-	// object, takes geometry and applies material
-	const cube = new THREE.Mesh(geometry, material);
-	const line = new THREE.Line(lineGeo, lineMat);
+	// Animation loop
+	const animate = function () {
+		requestAnimationFrame(animate);
 
-	scene.add(cube);
-	scene.add(line);
-
-	function animate() {
-		resizeCanvas();
-
-		line.rotation.y += 0.01;
-		cube.rotation.x += 0.01;
-		cube.rotation.y += 0.01;
-
+		// Rotate
+		sphere.rotation.y += 0.0005;
+		sphere.rotation.x += 0.00000001;
+		galaxy.rotation.y -= 0.0001;
 		renderer.render(scene, camera);
-		requestAnimationFrame(animate); // better than setinterval
-	}
+	};
 
+	// Handle window resize
+	window.addEventListener("resize", function () {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+	});
+
+	// Start the animation loop
 	animate();
 };
 
