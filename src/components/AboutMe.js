@@ -5,14 +5,14 @@ import uclaImg from "../images/uclapfp.jpg";
 const AboutMe = () => {
   return (
     <>
-      <span className="aboutContainer">
+      <div className="aboutContainer">
         <div className="aboutMe">
           <h1>Hi there!</h1>
           <br />
           <p className="commentText" style={{ fontSize: "14px" }}>
             // quick background <br /> // i used to have long hair!
           </p>
-          {/* add some flavor to this */}
+          {/* background */}
           <h4>
             I am a passionate full stack software engineer based in California. With a strong
             foundation in Applied Mathematics from UCLA, and advanced software engineering
@@ -43,7 +43,7 @@ const AboutMe = () => {
         <div className="aboutImage">
           <img src={uclaImg} alt="It's me!" loading="lazy"></img>
         </div>
-      </span>
+      </div>
     </>
   );
 };
