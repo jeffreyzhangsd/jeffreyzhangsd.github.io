@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.0e7b8ef6.css",
-    "main.js": "/static/js/main.b99ecb5b.js",
+    "main.js": "/static/js/main.7012eda1.js",
     "static/js/787.28cb0dcd.chunk.js": "/static/js/787.28cb0dcd.chunk.js",
     "static/media/uclapfp.jpg": "/static/media/uclapfp.4776501fa08bd16d094f.jpg",
     "index.html": "/index.html",
     "main.0e7b8ef6.css.map": "/static/css/main.0e7b8ef6.css.map",
-    "main.b99ecb5b.js.map": "/static/js/main.b99ecb5b.js.map",
+    "main.7012eda1.js.map": "/static/js/main.7012eda1.js.map",
     "787.28cb0dcd.chunk.js.map": "/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0e7b8ef6.css",
-    "static/js/main.b99ecb5b.js"
+    "static/js/main.7012eda1.js"
   ]
 }
