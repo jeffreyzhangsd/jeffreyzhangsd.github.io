@@ -80,7 +80,7 @@ body,
   transform: translate(-50%, -50%);
 }
 
-.container {
+.appContainer {
   position: relative;
   min-height: 100%;
   min-width: 100%;
@@ -118,6 +118,14 @@ nav {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+#name {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--text-color);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 /**
@@ -190,20 +198,27 @@ a {
   font-size: 24px;
 }
 
-.aboutContainer {
+/**
+===================================================
+                 Structure
+
+===================================================
+**/
+
+.container {
   display: grid;
   grid-template-columns: 60% 40%;
   align-items: center;
 }
 
-.aboutMe {
+.leftCol {
   padding: 20px; /* Optional: Add some padding for better spacing */
   text-align: left;
   justify-self: start; /* Align text to the start (left) */
   align-self: start; /* Align text to the top */
 }
 
-.aboutImage {
+.rightCol {
   max-width: 460px;
   max-height: 460px;
   overflow: hidden; /* Ensures that any overflow is hidden */
@@ -212,7 +227,7 @@ a {
   margin-right: auto;
 }
 
-.aboutImage img {
+.rightCol img {
   max-width: 100%; /* Ensure the image scales within its container */
   height: auto;
 }

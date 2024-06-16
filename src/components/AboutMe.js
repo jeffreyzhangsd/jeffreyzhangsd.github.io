@@ -5,8 +5,8 @@ import uclaImg from "../images/uclapfp.jpg";
 const AboutMe = () => {
   return (
     <>
-      <div className="aboutContainer">
-        <div className="aboutMe">
+      <div className="container">
+        <div className="leftCol">
           <h1>Hi there!</h1>
           <br />
           <p className="commentText" style={{ fontSize: "14px" }}>
@@ -40,7 +40,7 @@ const AboutMe = () => {
             Diego Padres.
           </p>
         </div>
-        <div className="aboutImage">
+        <div className="rightCol">
           <img src={uclaImg} alt="It's me!" loading="lazy"></img>
         </div>
       </div>

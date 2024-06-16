@@ -46,11 +46,11 @@ function App() {
   return (
     <>
       <div id="main">
-        <div className="container">
+        <div className="appContainer">
           <div className="header">
-            <h1 href="#home" style={{ cursor: "pointer" }} onClick={changeView("Home")}>
+            <a id="name" href="#home" onClick={changeView("Home")}>
               Jeffrey Zhang
-            </h1>
+            </a>
             <p>Full Stack Software Engineer</p>
             <nav>
               <ul className="tabs">
