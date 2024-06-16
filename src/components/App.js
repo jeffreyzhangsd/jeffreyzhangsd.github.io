@@ -6,7 +6,7 @@ import Contact from "./Contact";
 
 function App() {
   // State to manage the theme
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   // Toggle theme function
   const toggleTheme = () => {
