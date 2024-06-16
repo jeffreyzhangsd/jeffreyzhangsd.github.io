@@ -1,17 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.9edc7a18.css",
-    "main.js": "/static/js/main.cd535bdd.js",
+    "main.css": "/static/css/main.02f94556.css",
+    "main.js": "/static/js/main.4a9032ef.js",
     "static/js/787.28cb0dcd.chunk.js": "/static/js/787.28cb0dcd.chunk.js",
-    "static/media/starfield.png": "/static/media/starfield.6376a942e1ef27fea433.png",
-    "static/media/EarthMask_2500x1250.jpg": "/static/media/EarthMask_2500x1250.0e33cad1dfe64ccddefe.jpg",
     "index.html": "/index.html",
-    "main.9edc7a18.css.map": "/static/css/main.9edc7a18.css.map",
-    "main.cd535bdd.js.map": "/static/js/main.cd535bdd.js.map",
+    "main.02f94556.css.map": "/static/css/main.02f94556.css.map",
+    "main.4a9032ef.js.map": "/static/js/main.4a9032ef.js.map",
     "787.28cb0dcd.chunk.js.map": "/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9edc7a18.css",
-    "static/js/main.cd535bdd.js"
+    "static/css/main.02f94556.css",
+    "static/js/main.4a9032ef.js"
   ]
 }
