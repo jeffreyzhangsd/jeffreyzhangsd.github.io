@@ -1,14 +1,16 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React from "react";
+import uclaImg from "../images/uclapfp.jpg";
 
 const AboutMe = () => {
   return (
     <>
       <span className="aboutContainer">
         <div className="aboutMe">
-          <h1>Hi, I'm Jeffrey!</h1>
+          <h1>Hi there!</h1>
           <br />
-          <p className="commentText" style={{ fontSize: "12px" }}>
-            // quick background
+          <p className="commentText" style={{ fontSize: "14px" }}>
+            // quick background <br /> // i used to have long hair!
           </p>
           {/* add some flavor to this */}
           <h4>
@@ -18,7 +20,7 @@ const AboutMe = () => {
             expertise to the table.
           </h4>
           <br />
-          <p className="commentText" style={{ fontSize: "12px" }}>
+          <p className="commentText" style={{ fontSize: "14px" }}>
             // experience
           </p>
           {/* some skills */}
@@ -28,7 +30,7 @@ const AboutMe = () => {
             also have experience with testing, deployment and other developer tools.
           </p>
           <br />
-          <p className="commentText" style={{ fontSize: "12px" }}>
+          <p className="commentText" style={{ fontSize: "14px" }}>
             // hobbies
           </p>
           {/* other things */}
@@ -39,7 +41,7 @@ const AboutMe = () => {
           </p>
         </div>
         <div className="aboutImage">
-          <img src="https://github.com/jeffreyzhangsd.png" alt="It's me!" loading="lazy"></img>
+          <img src={uclaImg} alt="It's me!" loading="lazy"></img>
         </div>
       </span>
     </>

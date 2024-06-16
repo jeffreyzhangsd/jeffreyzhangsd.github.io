@@ -48,7 +48,7 @@ function App() {
       <div id="main">
         <div className="container">
           <div className="header">
-            <h1 href="#home" onClick={changeView("Home")}>
+            <h1 href="#home" style={{ cursor: "pointer" }} onClick={changeView("Home")}>
               Jeffrey Zhang
             </h1>
             <p>Full Stack Software Engineer</p>
