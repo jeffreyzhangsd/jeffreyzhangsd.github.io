@@ -33,7 +33,7 @@ function App() {
       case "Home":
         return <Home changeView={(v) => changeView(v)} />;
       case "Projects":
-        return <Projects changeView={(v) => changeView(v)} />;
+        return <Projects theme={theme} changeView={(v) => changeView(v)} />;
       case "AboutMe":
         return <AboutMe changeView={(v) => changeView(v)} />;
       case "Contact":
@@ -49,7 +49,7 @@ function App() {
         <div className="appContainer">
           <div className="header">
             <a id="name" href="#home" onClick={changeView("Home")}>
-              Jeffrey Zhang
+              Jeffrey Zhang{" "}
             </a>
             <p>Full Stack Software Engineer</p>
             <nav>
@@ -80,7 +80,7 @@ function App() {
             </button>
           </div>
 
-          <main>
+          <main style={{ maxHeight: "65vh", minHeight: "65vh" }}>
             <Suspense fallback={<p>Loading!</p>}>{renderView()}</Suspense>
           </main>
         </div>
