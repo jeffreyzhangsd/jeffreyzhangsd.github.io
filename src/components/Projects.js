@@ -34,7 +34,6 @@ const Projects = (theme) => {
       githubUrl: "https://github.com/BO-Phoenix/PAGER",
     },
     {
-      imageUrl: githubIcon,
       title: "Persistence",
       githubUrl: "https://github.com/jeffreyzhangsd/Persistence",
     },
@@ -45,7 +44,9 @@ const Projects = (theme) => {
 
   return (
     <>
-      <h1 style={{ padding: "20px" }}> Projects!</h1>
+      <h1 className="projects" style={{ padding: "20px" }}>
+        Projects!
+      </h1>
       <div className="projectContainer">
         {projects.map((p, index) => (
           <ProjectCard key={index} imageUrl={p.imageUrl} title={p.title} githubUrl={p.githubUrl} />

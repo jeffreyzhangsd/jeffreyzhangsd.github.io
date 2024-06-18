@@ -31,7 +31,7 @@ function App() {
   const renderView = () => {
     switch (view.name) {
       case "Home":
-        return <Home changeView={(v) => changeView(v)} />;
+        return <Home theme={theme} changeView={(v) => changeView(v)} />;
       case "Projects":
         return <Projects theme={theme} changeView={(v) => changeView(v)} />;
       case "AboutMe":
@@ -45,45 +45,46 @@ function App() {
 
   return (
     <>
-      <div id="main">
-        <div className="appContainer">
-          <div className="header">
-            <a id="name" href="#home" onClick={changeView("Home")}>
-              Jeffrey Zhang{" "}
-            </a>
-            <p>Full Stack Software Engineer</p>
-            <nav>
-              <ul className="tabs">
-                <li>
-                  <a href="#projects" onClick={changeView("Projects")}>
-                    Projects
-                  </a>
-                </li>
-                <li>
-                  <a href="#aboutme" onClick={changeView("AboutMe")}>
-                    About Me
-                  </a>
-                </li>
-                <li>
-                  <a href="#contact" onClick={changeView("Contact")}>
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            <button className="toggleTheme" onClick={toggleTheme}>
-              {theme === "light" ? (
-                <i className="fas fa-moon" style={{ color: "#000000" }}></i>
-              ) : (
-                <i className="fas fa-sun" style={{ color: "#ffffff" }}></i>
-              )}
-            </button>
-          </div>
-
-          <main style={{ maxHeight: "65vh", minHeight: "65vh" }}>
-            <Suspense fallback={<p>Loading!</p>}>{renderView()}</Suspense>
-          </main>
+      <div className="appContainer">
+        <div className="header">
+          <a id="name" href="#home" onClick={changeView("Home")}>
+            Jeffrey Zhang
+          </a>
+          <p>
+            <br />
+            Full Stack Software Engineer
+          </p>
+          <nav>
+            <ul className="tabs">
+              <li>
+                <a href="#projects" onClick={changeView("Projects")}>
+                  Projects
+                </a>
+              </li>
+              <li>
+                <a href="#aboutme" onClick={changeView("AboutMe")}>
+                  About Me
+                </a>
+              </li>
+              <li>
+                <a href="#contact" onClick={changeView("Contact")}>
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <button className="toggleTheme" onClick={toggleTheme}>
+            {theme === "light" ? (
+              <i className="fas fa-moon" style={{ color: "#000000" }}></i>
+            ) : (
+              <i className="fas fa-sun" style={{ color: "#ffffff" }}></i>
+            )}
+          </button>
         </div>
+
+        <main>
+          <Suspense fallback={<p>Loading!</p>}>{renderView()}</Suspense>
+        </main>
       </div>
     </>
   );
