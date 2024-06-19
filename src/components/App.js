@@ -43,6 +43,9 @@ function App() {
     }
   };
 
+  // Note to self: fix header margin for mobile devices
+  // also fix my name size for mobile
+
   return (
     <>
       <div className="appContainer">

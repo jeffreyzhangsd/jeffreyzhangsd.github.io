@@ -92,6 +92,11 @@ main {
   flex-direction: column;
   flex-grow: 1; /* Make main take up all available space */
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .header {
@@ -102,6 +107,11 @@ main {
   min-height: 18vh;
   padding-bottom: 30px;
   flex-shrink: 0; /* Prevent the header from shrinking */
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .header h1 {
@@ -141,6 +151,7 @@ ul {
 
   @media (max-width: 768px) {
     flex-direction: column; /* Switch to vertical layout */
+    padding: 20px 0;
   }
 
   flex-wrap: wrap;
@@ -151,6 +162,10 @@ ul {
   font-weight: 700;
   color: var(--text-color);
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
 }
 
 /**
@@ -195,6 +210,7 @@ a {
 }
 
 .toggleTheme {
+  padding: 0;
   border: 0;
   background: none;
 }
@@ -211,18 +227,44 @@ a {
 **/
 
 .leftCol h1 {
-  font-size: clamp(1rem, 2.5vw, 4rem);
+  font-size: 2.5vw;
+  line-height: 3vw;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.2rem;
+  }
 }
 
 .leftCol h4 {
-  font-size: 1.3vw;
-  line-height: 1.2;
+  font-size: 30px;
+  line-height: 28px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 12px;
+  }
 }
 
 .leftCol p {
   font-weight: 300;
-  font-size: 1.3vw;
-  line-height: 1.2;
+  font-size: 30px;
+  line-height: 28px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 12px;
+  }
+}
+
+.commentText {
+  color: #6a9955;
+  font-size: 12px;
+
+  @media (max-width: 768px) {
+    font-size: 8px;
+    line-height: 8px;
+  }
 }
 
 /**
@@ -240,30 +282,44 @@ a {
 }
 
 .leftCol {
-  padding: 20px; /* Optional: Add some padding for better spacing */
+  padding: 10px; /* Optional: Add some padding for better spacing */
   text-align: left;
   justify-self: start; /* Align text to the start (left) */
   align-self: start; /* Align text to the top */
   height: 100%;
+  overflow-y: scroll;
+
+  @media (max-width: 768px) {
+    padding: 5px;
+  }
 }
 
 .rightCol {
-  max-width: 460px;
-  max-height: 460px;
-  overflow: hidden; /* Ensures that any overflow is hidden */
-  text-align: center; /* Center the image horizontally */
+  display: flex;
   margin-left: auto;
   margin-right: auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
   height: 100%;
+  width: 100%;
 }
 
 .rightCol img {
-  max-width: 100%; /* Ensure the image scales within its container */
+  width: 460px;
   height: auto;
+  overflow: hidden;
 }
 
-.commentText {
-  color: #6a9955;
+.rightCol p {
+  font-size: 20px;
+  line-height: 22px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 14px;
+  }
 }
 
 /**
@@ -274,8 +330,16 @@ a {
 **/
 
 .projects {
-  padding: 20px;
-  font-size: clamp(1rem, 2.5vw, 4rem);
+  padding: 10px;
+
+  font-size: 2.5vw;
+  line-height: 3vw;
+
+  @media (max-width: 768px) {
+    padding: 5px;
+    font-size: 1rem;
+    line-height: 1.2rem;
+  }
 }
 
 .projectContainer {
@@ -338,9 +402,9 @@ a {
   display: block; /* Change to block to center vertically */
   margin: auto; /* Center horizontally */
 
-  font-size: 140px;
-  height: 140px;
-  width: 140px;
+  font-size: clamp(100px, 120px, 140px);
+  max-height: 140px;
+  max-width: 140px;
 
   color: var(--background-color);
   background: var(--text-color);
@@ -358,11 +422,20 @@ a {
   display: flex;
   text-decoration-color: var(--text-color);
   width: fit-content;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2px;
+  }
 }
 
 .icon-button p {
-  font-size: 1.8rem;
+  font-size: 32px;
   color: var(--text-color);
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 }
 
 .icon-button i {
@@ -371,17 +444,26 @@ a {
   display: inline-block;
   font-size: 1.3rem;
   height: 2.6rem;
+  width: 2.6rem;
   line-height: 2.6rem;
-  margin: 0 15px;
+  margin: 5px 15px;
   position: relative;
   text-align: center;
+
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  width: 2.6rem;
-  margin-bottom: 10px;
+
   color: var(--background-color);
+
+  @media (max-width: 768px) {
+    line-height: 18px;
+    height: 18px;
+    width: 18px;
+    font-size: 8px;
+    margin: 0 5px;
+  }
 }
 
 .main-button {
@@ -404,9 +486,11 @@ a {
   cursor: pointer;
   letter-spacing: 2px;
 }
+
 .main-button:hover {
   transition: ease-in 0.3s;
 }
+
 .project-button {
   display: flex;
   justify-content: center;
@@ -418,6 +502,7 @@ a {
     font-size: 15px;
     padding: 12px 18px;
     margin-right: 0px;
+    margin-top: 5px;
   }
 }
 @media (max-width: 320px) {
@@ -427,4 +512,33 @@ a {
 }
 
 .homeContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.homeContainer p {
+  align-self: center;
+  line-height: 42px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 12px;
+  }
+}
+
+/**
+===================================================
+                  Contact
+
+===================================================
+**/
+
+.calendly {
+  font-size: 24px;
+  line-height: 22px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 14px;
+  }
 }

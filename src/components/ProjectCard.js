@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProjectCard = ({ imageUrl, title, githubUrl }) => {
+const ProjectCard = ({ imageUrl, title, githubUrl, desc }) => {
   return (
     <div className="projectCardContainer">
       {imageUrl ? (
@@ -10,6 +10,7 @@ const ProjectCard = ({ imageUrl, title, githubUrl }) => {
       )}
 
       <h1 className="projectTitle">{title}</h1>
+      <p>{desc}</p>
       <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="githubLink">
         View on GitHub
       </a>

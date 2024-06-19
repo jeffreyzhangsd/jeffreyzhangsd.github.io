@@ -33,6 +33,8 @@ const SocialMedia = (props) => {
     },
   ];
 
+  // note to self: fix button and name size for phones
+
   return (
     <div className="social-media-div">
       {socialMediaLinks.map((media, i) => {
@@ -47,7 +49,6 @@ const SocialMedia = (props) => {
               <i className={`fab ${media.fontAwesomeIcon}`}></i>
             </IconWrapper>
             <p>{media.name}</p>
-            {/* <span></span> */}
           </a>
         );
       })}

@@ -3,24 +3,23 @@ import React from "react";
 import uclaImg from "../images/uclapfp.jpg";
 
 const AboutMe = () => {
+  const commentStyle = { fontSize: "12px", lineHeight: "10px", margin: "5px 0" };
   return (
     <>
       <div className="container">
         <div className="leftCol">
           <h1>Hi there!</h1>
-          <br />
-          <p className="commentText" style={{ fontSize: "14px" }}>
-            // quick background <br /> // i used to have long hair!
+          <p className="commentText" style={commentStyle}>
+            // quick background - i used to have long hair!
           </p>
           {/* background */}
           <h4>
-            I am a passionate full stack software engineer based in California. With a strong
-            foundation in Applied Mathematics from UCLA, and advanced software engineering
-            experience from Hack Reactor, I bring a unique blend of analytical skill and technical
-            expertise to the table.
+            I'm a passionate full stack software engineer based in San Diego, California. With a
+            foundation in Applied Math from UCLA and advanced software engineering experience from
+            Hack Reactor, I bring a unique blend of analytical skill and technical expertise to the
+            table.
           </h4>
-          <br />
-          <p className="commentText" style={{ fontSize: "14px" }}>
+          <p className="commentText" style={commentStyle}>
             // experience
           </p>
           {/* some skills */}
@@ -29,8 +28,7 @@ const AboutMe = () => {
             skill set including JavaScript, TypeScript, React, Node, SQL, NoSQL, Python and more. I
             also have experience with testing, deployment and other developer tools.
           </p>
-          <br />
-          <p className="commentText" style={{ fontSize: "14px" }}>
+          <p className="commentText" style={commentStyle}>
             // hobbies
           </p>
           {/* other things */}
