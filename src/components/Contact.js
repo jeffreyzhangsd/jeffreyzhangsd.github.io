@@ -11,7 +11,7 @@ const Contact = () => {
     <>
       <div className="container">
         <div className="leftCol">
-          <h1>Contact Information and Social Medias</h1>
+          <h1>Contact Information and social medias</h1>
           <div className="homeContainer">
             <p>You can reach me on LinkedIn and my email here!</p>
             <br />
@@ -27,7 +27,7 @@ const Contact = () => {
           style={{ flexDirection: "column", justifyContent: "start", padding: "20px" }}>
           <p>
             If you'd like to set up a meeting with me you can schedule one here with Calendly!
-            <br /> Mon - Fri PDT, 12PM - 5Pm
+            <br /> Mon - Fri PDT, 12PM - 5PM
           </p>
           <br />
           <a

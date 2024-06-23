@@ -5,13 +5,13 @@ const Projects = (theme) => {
   const projects = [
     {
       imageUrl: "https://github.com/perFECt-dark/Front-End-Capstone/raw/master/client/Gallery.png",
-      title: "perFECt Dark",
+      title: "Project Atelier FE",
       githubUrl: "https://github.com/perFECt-dark/Front-End-Capstone",
       desc: "Front end project",
     },
     {
       imageUrl: "https://avatars.githubusercontent.com/u/121067631?s=48&v=4",
-      title: "Project Atelier",
+      title: "Project Atelier SDE",
       githubUrl: "https://github.com/Gaviali/Ratings-and-Reviews-SDC",
       desc: "System design back-end project",
     },
@@ -25,7 +25,7 @@ const Projects = (theme) => {
     {
       title: "Persistence",
       githubUrl: "https://github.com/jeffreyzhangsd/Persistence",
-      desc: "Swift Project",
+      desc: "Swift notification project",
     },
   ];
 

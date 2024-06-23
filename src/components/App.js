@@ -60,13 +60,13 @@ function App() {
           <nav>
             <ul className="tabs">
               <li>
-                <a href="#projects" onClick={changeView("Projects")}>
-                  Projects
+                <a href="#aboutme" onClick={changeView("AboutMe")}>
+                  About Me
                 </a>
               </li>
               <li>
-                <a href="#aboutme" onClick={changeView("AboutMe")}>
-                  About Me
+                <a href="#projects" onClick={changeView("Projects")}>
+                  Projects
                 </a>
               </li>
               <li>
