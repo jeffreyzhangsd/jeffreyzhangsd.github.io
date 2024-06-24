@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React from "react";
-import uclaImg from "../images/uclapfp.jpg";
 
 const AboutMe = () => {
   const commentStyle = { fontSize: "12px", lineHeight: "10px", margin: "5px 0" };
@@ -39,7 +38,10 @@ const AboutMe = () => {
           </p>
         </div>
         <div className="rightCol">
-          <img src={uclaImg} alt="It's me!" loading="lazy"></img>
+          <img
+            src="https://github.com/jeffreyzhangsd/Fetch-Android-Takehome/assets/109628105/6babb594-ea86-444d-9279-6eb2829599be"
+            alt="It's me!"
+            loading="lazy"></img>
         </div>
       </div>
     </>
