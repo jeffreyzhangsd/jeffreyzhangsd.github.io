@@ -45,6 +45,7 @@ function App() {
 
   // Note to self: fix header margin for mobile devices
   // also fix my name size for mobile
+  // next.js to host everything would probably be better (fast image)
 
   return (
     <>

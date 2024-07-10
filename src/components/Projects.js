@@ -32,7 +32,7 @@ const Projects = (theme) => {
         "https://github.com/jeffreyzhangsd/http-cat-viewer/assets/109628105/cf9f6f78-8778-46dd-a191-81576cfbd73a",
       title: "HTTP Cat Viewer",
       githubUrl: "https://github.com/jeffreyzhangsd/http-cat-viewer",
-      desc: "NextJS Hackathon project",
+      desc: "1st place NextJS hackathon project",
     },
   ];
 
