@@ -42,7 +42,7 @@ const Home = ({ resumeURL }) => {
           </div>
         </div>
         <div className="rightCol">
-          <img src="https://github.com/jeffreyzhangsd.png" alt="It's me!"></img>
+          <img src="https://github.com/jeffreyzhangsd.png" alt="It's me!" priority="high"></img>
         </div>
       </div>
     </>

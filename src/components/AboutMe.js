@@ -12,12 +12,12 @@ const AboutMe = () => {
             // quick background - i used to have long hair!
           </p>
           {/* background */}
-          <h4>
+          <p style={{ fontWeight: "600" }}>
             I'm a passionate full stack software engineer based in San Diego, California. With a
             foundation in Applied Math from UCLA and advanced software engineering experience from
             Hack Reactor, I bring a unique blend of analytical skill and technical expertise to the
             table.
-          </h4>
+          </p>
           <p className="commentText" style={commentStyle}>
             // experience
           </p>
@@ -41,7 +41,7 @@ const AboutMe = () => {
           <img
             src="https://github.com/jeffreyzhangsd/Fetch-Android-Takehome/assets/109628105/6babb594-ea86-444d-9279-6eb2829599be"
             alt="It's me!"
-            ></img>
+            priority="high"></img>
         </div>
       </div>
     </>
