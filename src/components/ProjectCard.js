@@ -4,7 +4,7 @@ const ProjectCard = ({ imageUrl, title, githubUrl, desc }) => {
   return (
     <div className="projectCardContainer">
       {imageUrl ? (
-        <img src={imageUrl} alt={`${title} thumbnail`} className="projectImage" />
+        <img src={imageUrl} alt={`${title} thumbnail`} className="projectImage" priority="high" />
       ) : (
         <i className="fab fa-github"></i>
       )}

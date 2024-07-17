@@ -7,20 +7,20 @@ const Projects = (theme) => {
       imageUrl: "https://github.com/perFECt-dark/Front-End-Capstone/raw/master/client/Gallery.png",
       title: "Project Atelier FE",
       githubUrl: "https://github.com/perFECt-dark/Front-End-Capstone",
-      desc: "Front end project",
+      desc: "Front end e-commerce page",
     },
     {
       imageUrl: "https://avatars.githubusercontent.com/u/121067631?s=48&v=4",
       title: "Project Atelier SDE",
       githubUrl: "https://github.com/Gaviali/Ratings-and-Reviews-SDC",
-      desc: "System design back-end project",
+      desc: "Back end for e-commerce page",
     },
     {
       imageUrl:
         "https://user-images.githubusercontent.com/59150695/214371736-04101068-2797-4f48-893c-112f8b311588.gif",
       title: "PAGER",
       githubUrl: "https://github.com/BO-Phoenix/PAGER",
-      desc: "Full stack mobile application",
+      desc: "Full stack social media mobile app",
     },
     {
       title: "Persistence",
@@ -33,6 +33,12 @@ const Projects = (theme) => {
       title: "HTTP Cat Viewer",
       githubUrl: "https://github.com/jeffreyzhangsd/http-cat-viewer",
       desc: "1st place NextJS hackathon project",
+    },
+    {
+      imageUrl: "https://github.com/mlekhi/sipnplay/raw/main/image.png",
+      title: "Sip & Play Refreshed",
+      githubUrl: "https://github.com/mlekhi/sipnplay",
+      desc: "2nd place CodeDex hackathon project",
     },
   ];
 

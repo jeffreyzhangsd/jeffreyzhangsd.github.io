@@ -41,7 +41,7 @@ const AboutMe = () => {
           <img
             src="https://github.com/jeffreyzhangsd/Fetch-Android-Takehome/assets/109628105/6babb594-ea86-444d-9279-6eb2829599be"
             alt="It's me!"
-            loading="lazy"></img>
+            ></img>
         </div>
       </div>
     </>

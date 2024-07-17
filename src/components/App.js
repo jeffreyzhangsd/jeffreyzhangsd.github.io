@@ -28,16 +28,18 @@ function App() {
     };
   };
 
+  const resumeURL = "https://drive.google.com/file/d/1nOeUaGHnybyCiKU7N1UyW8IJ1LfOaKju/view?usp=sharing"
+
   const renderView = () => {
     switch (view.name) {
       case "Home":
-        return <Home theme={theme} changeView={(v) => changeView(v)} />;
+        return <Home resumeURL={resumeURL} theme={theme} changeView={(v) => changeView(v)} />;
       case "Projects":
         return <Projects theme={theme} changeView={(v) => changeView(v)} />;
       case "AboutMe":
         return <AboutMe changeView={(v) => changeView(v)} />;
       case "Contact":
-        return <Contact changeView={(v) => changeView(v)} />;
+        return <Contact resumeURL={resumeURL} changeView={(v) => changeView(v)} />;
       default:
         return <Home changeView={(v) => changeView(v)} />;
     }

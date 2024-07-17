@@ -3,10 +3,7 @@ import SocialMedia from "./SocialMedia";
 import Button from "./Button";
 import peepo from "../images/peeposhy.jpg";
 
-const Contact = () => {
-  const resumeLink =
-    "https://drive.google.com/file/d/1FYApZkQLq0FzWh4EJS10Po69-uPE7Af0/view?usp=sharing";
-
+const Contact = ({ resumeURL }) => {
   return (
     <>
       <div className="container">
@@ -18,7 +15,7 @@ const Contact = () => {
             <SocialMedia />
             <br />
             <div>
-              <Button text="See My Resume!" newTab={true} href={resumeLink} />
+              <Button text="See My Resume!" newTab={true} href={resumeURL} />
             </div>
           </div>
         </div>
