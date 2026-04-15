@@ -4,30 +4,51 @@
   /* ---- Constants ------------------------------------------------ */
   var STORAGE_KEY = "jz_game";
   var TICK_MS = 1000;
-  var LAUNCH_EVERY_N_TICKS = 15;
+  var LAUNCH_EVERY_N_TICKS = 9;
   var FLIGHT_MS = 5000;
 
   var UPGRADES = [
-    { id: "moonbase-1", threshold: 5, type: "moonbase" },
+    {
+      id: "moonbase-1",
+      threshold: 5,
+      type: "moonbase",
+      label: "\u2726 moon base established",
+    },
     {
       id: "leetcode",
       threshold: 12,
       type: "handle",
       label: "\u2726 leetcode unlocked",
     },
-    { id: "moonbase-2", threshold: 20, type: "moonbase" },
+    {
+      id: "moonbase-2",
+      threshold: 20,
+      type: "moonbase",
+      label: "\u2726 moon base expanded",
+    },
     {
       id: "twitter",
       threshold: 30,
       type: "handle",
       label: "\u2726 twitter unlocked",
     },
-    { id: "moonbase-3", threshold: 45, type: "moonbase" },
     {
-      id: "riot",
+      id: "moonbase-3",
+      threshold: 45,
+      type: "moonbase",
+      label: "\u2726 moon base completed",
+    },
+    {
+      id: "riot games username",
       threshold: 60,
       type: "handle",
-      label: "\u2726 riot unlocked",
+      label: "\u2726 riot games user unlocked",
+    },
+    {
+      id: "disco",
+      threshold: 100,
+      type: "disco",
+      label: "\u2726 surprise unlocked!",
     },
   ];
 
@@ -44,10 +65,30 @@
   var LAUNCHPAD_ASCII = " ^ \n/|\\";
 
   var MOON_STAGES = [
-    "   (   )\n  (     )\n (       )\n  (     )\n   (   )",
-    "     |\n   (   )\n  (     )\n (       )\n  (     )\n   (   )",
-    "     |\n   (   )\n  ([___])\n (       )\n  (     )\n   (   )",
-    "     |\n   (   )\n  ([___])\n ( |___| )\n  (_____)\n   (   )",
+    "(        )\n(            )\n(              )\n(            )\n(        )",
+    "|\n(        )\n(            )\n(              )\n(            )\n(        )",
+    "|\n(        )\n( [o______o] )\n(              )\n(            )\n(        )",
+    "|\n(        )\n( [o______o] )\n(  [========]  )\n( |________| )\n(        )",
+  ];
+
+  /* ---- Disco colors --------------------------------------------- */
+  var DISCO_COLORS = [
+    "#ff0080",
+    "#ff6600",
+    "#ffcc00",
+    "#00ff88",
+    "#00ccff",
+    "#9933ff",
+    "#ff33cc",
+  ];
+  var DISCO_BG = [
+    "#1a0010",
+    "#1a0800",
+    "#0d1a00",
+    "#001a0d",
+    "#00101a",
+    "#0d001a",
+    "#1a0014",
   ];
 
   /* ---- State ---------------------------------------------------- */
@@ -90,17 +131,19 @@
     var moon = makeEl("div", "game-moon");
     var moonAscii = makeEl("pre", "game-moon-ascii");
     var moonCounter = makeEl("div", "game-moon-counter");
-    var upgradeBtn = makeEl("button", "game-upgrade-btn", "[ upgrade ]");
+    var upgradeBtn = makeEl("button", "game-upgrade-btn");
+    var notif = makeEl("div", "game-notif");
     moon.appendChild(moonAscii);
     moon.appendChild(moonCounter);
     moon.appendChild(upgradeBtn);
+    moon.appendChild(notif);
 
-    var notif = makeEl("div", "game-notif");
+    var discoBtn = makeEl("button", "game-disco-btn", "start disco");
     var resetBtn = makeEl("button", "game-reset-btn", "reset game");
 
     layer.appendChild(earth);
     layer.appendChild(moon);
-    layer.appendChild(notif);
+    layer.appendChild(discoBtn);
     layer.appendChild(resetBtn);
     document.body.appendChild(layer);
   }
@@ -140,13 +183,83 @@
     }, 2300);
   }
 
+  /* ---- Disco ---------------------------------------------------- */
+  var discoActive = false;
+  var discoInterval = null;
+  var discoTick = 0;
+  var discoEls = null;
+
+  var DISCO_GAME_IDS = [
+    "game-earth-ascii",
+    "game-launchpad",
+    "game-moon-ascii",
+    "game-moon-counter",
+  ];
+
+  function refreshDiscoCache() {
+    var container = document.querySelector(".container");
+    discoEls = container
+      ? Array.prototype.slice.call(container.querySelectorAll("*"))
+      : [];
+  }
+
+  function applyDisco() {
+    discoTick++;
+    var n = DISCO_COLORS.length;
+    document.body.style.backgroundColor = DISCO_BG[discoTick % DISCO_BG.length];
+    for (var i = 0; i < DISCO_GAME_IDS.length; i++) {
+      var el = document.getElementById(DISCO_GAME_IDS[i]);
+      if (el) el.style.color = DISCO_COLORS[(discoTick + i) % n];
+    }
+    for (var j = 0; j < discoEls.length; j++) {
+      discoEls[j].style.color = DISCO_COLORS[(discoTick + j + 3) % n];
+    }
+  }
+
+  function startDisco() {
+    if (discoActive) return;
+    discoActive = true;
+    refreshDiscoCache();
+    var discoBtn = document.getElementById("game-disco-btn");
+    if (discoBtn) {
+      discoBtn.textContent = "stop disco";
+      discoBtn.style.color = "#d8d8d8";
+    }
+    var resetBtn = document.getElementById("game-reset-btn");
+    if (resetBtn) resetBtn.style.color = "#d8d8d8";
+    discoInterval = setInterval(applyDisco, 500);
+  }
+
+  function stopDisco() {
+    if (!discoActive) return;
+    discoActive = false;
+    clearInterval(discoInterval);
+    discoInterval = null;
+    document.body.style.backgroundColor = "";
+    for (var i = 0; i < DISCO_GAME_IDS.length; i++) {
+      var el = document.getElementById(DISCO_GAME_IDS[i]);
+      if (el) el.style.color = "";
+    }
+    for (var j = 0; j < discoEls.length; j++) {
+      discoEls[j].style.color = "";
+    }
+    discoEls = null;
+    var discoBtn = document.getElementById("game-disco-btn");
+    if (discoBtn) {
+      discoBtn.textContent = "start disco";
+      discoBtn.style.color = "";
+    }
+    var resetBtn = document.getElementById("game-reset-btn");
+    if (resetBtn) resetBtn.style.color = "";
+  }
+
   /* ---- Unlocks -------------------------------------------------- */
   function applyUnlocks(state) {
     var handles = document.querySelectorAll(".locked-handle");
     for (var i = 0; i < handles.length; i++) {
       var el = handles[i];
       if (state.unlockedUpgrades.indexOf(el.dataset.unlock) !== -1) {
-        el.style.display = "";
+        el.style.display = "block";
       }
     }
   }
@@ -163,7 +276,26 @@
   function updateUpgradeButton(state) {
     var btn = document.getElementById("game-upgrade-btn");
     if (!btn) return;
-    btn.style.display = getAvailableUpgrade(state) ? "" : "none";
+    var up = getAvailableUpgrade(state);
+    if (up) {
+      var action;
+      if (up.type === "handle") {
+        action = "unlock " + up.id;
+      } else if (up.type === "disco") {
+        action = "still here?\nhave a surprise!";
+      } else {
+        action = "upgrade base";
+      }
+      btn.textContent =
+        action +
+        "\n" +
+        up.threshold +
+        " astronaut" +
+        (up.threshold === 1 ? "" : "s");
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
   }
 
   function fireUpgrade(state) {
@@ -175,18 +307,30 @@
       applyUnlocks(state);
     }
     if (up.type === "moonbase") {
+      showNotification(up.label);
       updateMoonDisplay(state);
+    }
+    if (up.type === "disco") {
+      showNotification(up.label);
+      startDisco();
+      var discoBtn = document.getElementById("game-disco-btn");
+      if (discoBtn) discoBtn.style.display = "block";
     }
     saveState(state);
     updateUpgradeButton(state);
   }
 
   function resetGame(state) {
+    stopDisco();
     state.astronauts = 0;
     state.unlockedUpgrades = [];
     saveState(state);
     updateMoonDisplay(state);
     updateUpgradeButton(state);
+    var launchpad = document.getElementById("game-launchpad");
+    if (launchpad) launchpad.style.visibility = "visible";
+    var discoBtn = document.getElementById("game-disco-btn");
+    if (discoBtn) discoBtn.style.display = "none";
     var handles = document.querySelectorAll(".locked-handle");
     for (var i = 0; i < handles.length; i++) {
       handles[i].style.display = "none";
@@ -245,6 +389,7 @@
 
     requestAnimationFrame(animate);
   }
+
   function onRocketLand(state) {
     rocketInFlight = false;
     state.astronauts += 1;
@@ -282,6 +427,7 @@
         window.scrollTo(0, 0);
         if (typeof window._themeInit === "function") window._themeInit();
         applyUnlocks(state);
+        if (discoActive) refreshDiscoCache();
       })
       .catch(function () {
         location.href = href;
@@ -349,6 +495,20 @@
       .addEventListener("click", function () {
         resetGame(state);
       });
+
+    document
+      .getElementById("game-disco-btn")
+      .addEventListener("click", function () {
+        if (discoActive) {
+          stopDisco();
+        } else {
+          startDisco();
+        }
+      });
+
+    if (state.unlockedUpgrades.indexOf("disco") !== -1) {
+      document.getElementById("game-disco-btn").style.display = "block";
+    }
 
     initPageSwap(state);
     startLoop(state);
