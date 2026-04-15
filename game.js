@@ -8,21 +8,36 @@
   var FLIGHT_MS = 5000;
 
   var UPGRADES = [
-    { id: "moonbase-1", threshold: 5, type: "moonbase" },
+    {
+      id: "moonbase-1",
+      threshold: 5,
+      type: "moonbase",
+      label: "\u2726 moon base established",
+    },
     {
       id: "leetcode",
       threshold: 12,
       type: "handle",
       label: "\u2726 leetcode unlocked",
     },
-    { id: "moonbase-2", threshold: 20, type: "moonbase" },
+    {
+      id: "moonbase-2",
+      threshold: 20,
+      type: "moonbase",
+      label: "\u2726 moon base expanded",
+    },
     {
       id: "twitter",
       threshold: 30,
       type: "handle",
       label: "\u2726 twitter unlocked",
     },
-    { id: "moonbase-3", threshold: 45, type: "moonbase" },
+    {
+      id: "moonbase-3",
+      threshold: 45,
+      type: "moonbase",
+      label: "\u2726 moon base completed",
+    },
     {
       id: "riot",
       threshold: 60,
@@ -44,10 +59,10 @@
   var LAUNCHPAD_ASCII = " ^ \n/|\\";
 
   var MOON_STAGES = [
-    "   (   )\n  (     )\n (       )\n  (     )\n   (   )",
-    "     |\n   (   )\n  (     )\n (       )\n  (     )\n   (   )",
-    "     |\n   (   )\n  ([___])\n (       )\n  (     )\n   (   )",
-    "     |\n   (   )\n  ([___])\n ( |___| )\n  (_____)\n   (   )",
+    "(        )\n(            )\n(              )\n(            )\n(        )",
+    "|\n(        )\n(            )\n(              )\n(            )\n(        )",
+    "|\n(        )\n( [o______o] )\n(              )\n(            )\n(        )",
+    "|\n(        )\n( [o______o] )\n(  [========]  )\n( |________| )\n(        )",
   ];
 
   /* ---- State ---------------------------------------------------- */
@@ -90,7 +105,7 @@
     var moon = makeEl("div", "game-moon");
     var moonAscii = makeEl("pre", "game-moon-ascii");
     var moonCounter = makeEl("div", "game-moon-counter");
-    var upgradeBtn = makeEl("button", "game-upgrade-btn", "[ upgrade ]");
+    var upgradeBtn = makeEl("button", "game-upgrade-btn");
     moon.appendChild(moonAscii);
     moon.appendChild(moonCounter);
     moon.appendChild(upgradeBtn);
@@ -163,7 +178,19 @@
   function updateUpgradeButton(state) {
     var btn = document.getElementById("game-upgrade-btn");
     if (!btn) return;
-    btn.style.display = getAvailableUpgrade(state) ? "" : "none";
+    var up = getAvailableUpgrade(state);
+    if (up) {
+      var action = up.type === "handle" ? "unlock " + up.id : "upgrade base";
+      btn.textContent =
+        action +
+        "\n" +
+        up.threshold +
+        " astronaut" +
+        (up.threshold === 1 ? "" : "s");
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
   }
 
   function fireUpgrade(state) {
@@ -175,6 +202,7 @@
       applyUnlocks(state);
     }
     if (up.type === "moonbase") {
+      showNotification(up.label);
       updateMoonDisplay(state);
     }
     saveState(state);
@@ -187,6 +215,8 @@
     saveState(state);
     updateMoonDisplay(state);
     updateUpgradeButton(state);
+    var launchpad = document.getElementById("game-launchpad");
+    if (launchpad) launchpad.style.visibility = "visible";
     var handles = document.querySelectorAll(".locked-handle");
     for (var i = 0; i < handles.length; i++) {
       handles[i].style.display = "none";
