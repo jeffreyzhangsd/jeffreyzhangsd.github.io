@@ -167,10 +167,63 @@
   var rocketInFlight = false;
 
   function launchRocket(state) {
-    /* filled in Task 4 */
+    if (rocketInFlight) return;
+    rocketInFlight = true;
+
+    var launchpad = document.getElementById("game-launchpad");
+    if (launchpad) launchpad.style.visibility = "hidden";
+
+    var earthEl = document.getElementById("game-earth");
+    var moonEl = document.getElementById("game-moon");
+    if (!earthEl || !moonEl) {
+      rocketInFlight = false;
+      return;
+    }
+
+    var er = earthEl.getBoundingClientRect();
+    var mr = moonEl.getBoundingClientRect();
+
+    var startX = er.left + er.width / 2;
+    var startY = er.top;
+    var endX = mr.left + mr.width / 2;
+    var endY = mr.top;
+    var midX = (startX + endX) / 2;
+    var arcHeight = Math.min(window.innerHeight * 0.3, 150);
+    var midY = Math.min(startY, endY) - arcHeight;
+
+    var rocket = document.createElement("div");
+    rocket.className = "game-rocket";
+    rocket.textContent = "\u25b2";
+    document.getElementById("game-layer").appendChild(rocket);
+
+    var startTime = performance.now();
+
+    function animate(now) {
+      var t = Math.min((now - startTime) / FLIGHT_MS, 1);
+      var u = 1 - t;
+      var x = u * u * startX + 2 * u * t * midX + t * t * endX;
+      var y = u * u * startY + 2 * u * t * midY + t * t * endY;
+      rocket.style.left = x + "px";
+      rocket.style.top = y + "px";
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        rocket.remove();
+        onRocketLand(state);
+      }
+    }
+
+    requestAnimationFrame(animate);
   }
   function onRocketLand(state) {
-    /* filled in Task 4 */
+    rocketInFlight = false;
+    state.astronauts += 1;
+    checkUpgrades(state);
+    updateMoonDisplay(state);
+    saveState(state);
+
+    var launchpad = document.getElementById("game-launchpad");
+    if (launchpad) launchpad.style.visibility = "visible";
   }
 
   /* ---- Page swap ------------------------------------------------ */
