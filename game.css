@@ -1,0 +1,129 @@
+/* ---- Game Layer ------------------------------------------------- */
+
+@media (max-width: 768px) {
+  #game-layer {
+    display: none;
+  }
+}
+
+#game-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  font-family: monospace;
+}
+
+/* ---- Earth ------------------------------------------------------ */
+#game-earth {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  color: #3a5a3a;
+  line-height: 1.2;
+  user-select: none;
+}
+
+#game-earth pre {
+  margin: 0;
+  font-size: 13px;
+}
+
+#game-launchpad {
+  color: #666;
+  text-align: center;
+  margin-bottom: 1px !important;
+  line-height: 1.1;
+}
+
+/* ---- Moon ------------------------------------------------------- */
+#game-moon {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  color: #6a6a6a;
+  text-align: center;
+  user-select: none;
+}
+
+#game-moon pre {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+#game-upgrade-btn {
+  display: none;
+  margin-top: 8px;
+  color: #c8c8c8;
+  font-size: 11px;
+  font-family: monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+#game-upgrade-btn:hover {
+  color: #fff;
+}
+
+/* ---- Reset ------------------------------------------------------ */
+#game-reset-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: #333;
+  font-size: 10px;
+  font-family: monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  user-select: none;
+}
+
+#game-reset-btn:hover {
+  color: #666;
+}
+
+#game-moon-counter {
+  color: #444;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-top: 6px;
+  font-family: monospace;
+}
+
+/* ---- Rocket (in-flight) ---------------------------------------- */
+.game-rocket {
+  position: fixed;
+  color: #888;
+  font-family: monospace;
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 5;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+/* ---- Notification ---------------------------------------------- */
+#game-notif {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #c8c8c8;
+  font-size: 11px;
+  font-family: monospace;
+  letter-spacing: 1.5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+}
