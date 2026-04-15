@@ -42,7 +42,6 @@
   top: 30px;
   right: 30px;
   color: #6a6a6a;
-  line-height: 1.2;
   text-align: center;
   user-select: none;
 }
@@ -50,6 +49,7 @@
 #game-moon pre {
   margin: 0;
   font-size: 13px;
+  line-height: 1.1;
 }
 
 #game-moon-counter {
