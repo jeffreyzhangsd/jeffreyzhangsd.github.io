@@ -4,7 +4,7 @@
   /* ---- Constants ------------------------------------------------ */
   var STORAGE_KEY = "jz_game";
   var TICK_MS = 1000;
-  var LAUNCH_EVERY_N_TICKS = 30;
+  var LAUNCH_EVERY_N_TICKS = 15;
   var FLIGHT_MS = 5000;
 
   var UPGRADES = [
@@ -41,13 +41,13 @@
     "  '-----'",
   ].join("\n");
 
-  var LAUNCHPAD_ASCII = " ^\n/|\\";
+  var LAUNCHPAD_ASCII = " ^ \n/|\\";
 
   var MOON_STAGES = [
-    "  (    )\n (      )\n(        )\n (      )\n  (    )",
-    "    |\n  (    )\n (      )\n(        )\n (      )\n  (    )",
-    "    |\n  (    )\n ( [__] )\n(        )\n (      )\n  (    )",
-    "    |\n  (    )\n ( [__] )\n(  |__|  )\n (_____) \n  (    )",
+    "  (  )\n (    )\n(      )\n (    )\n  (  )",
+    "   |\n  (  )\n (    )\n(      )\n (    )\n  (  )",
+    "   |\n  (  )\n ([__])\n(      )\n (    )\n  (  )",
+    "   |\n  (  )\n ([__])\n( |__| )\n (____)\n  (  )",
   ];
 
   /* ---- State ---------------------------------------------------- */
@@ -188,8 +188,8 @@
     var endX = mr.left + mr.width / 2;
     var endY = mr.top;
     var midX = (startX + endX) / 2;
-    var arcHeight = Math.min(window.innerHeight * 0.3, 150);
-    var midY = Math.min(startY, endY) - arcHeight;
+    var arcHeight = Math.min(window.innerHeight * 0.25, 120);
+    var midY = (startY + endY) / 2 - arcHeight;
 
     var rocket = document.createElement("div");
     rocket.className = "game-rocket";

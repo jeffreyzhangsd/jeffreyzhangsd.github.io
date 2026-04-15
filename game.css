@@ -39,7 +39,7 @@
 /* ---- Moon ------------------------------------------------------- */
 #game-moon {
   position: fixed;
-  bottom: 30px;
+  top: 30px;
   right: 30px;
   color: #6a6a6a;
   line-height: 1.2;
