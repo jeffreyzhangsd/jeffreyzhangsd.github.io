@@ -1,6 +1,9 @@
 # Worktrees
 .worktrees/
 
+# Build deps
+node_modules/
+
 # Docs
 docs/
 *.md
