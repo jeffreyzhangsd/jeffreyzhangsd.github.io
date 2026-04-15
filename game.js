@@ -1,10 +1,16 @@
 (function () {
   "use strict";
 
+  /* ---- Console easter egg --------------------------------------- */
+  console.log(
+    "%c hey, what are you looking for?! \uD83D\uDE28",
+    "background:#0d0d0d;color:#d8d8d8;font-family:monospace;font-size:13px;padding:6px 12px;border:1px solid #555;",
+  );
+
   /* ---- Constants ------------------------------------------------ */
   var STORAGE_KEY = "jz_game";
   var TICK_MS = 1000;
-  var LAUNCH_EVERY_N_TICKS = 15;
+  var LAUNCH_EVERY_N_TICKS = 9;
   var FLIGHT_MS = 5000;
 
   var UPGRADES = [
@@ -39,12 +45,70 @@
       label: "\u2726 moon base completed",
     },
     {
-      id: "riot",
+      id: "riot games username",
       threshold: 60,
       type: "handle",
-      label: "\u2726 riot unlocked",
+      label: "\u2726 riot games user unlocked",
+      btnText: "unlock riot\ngames username",
+    },
+    {
+      id: "disco",
+      threshold: 100,
+      type: "disco",
+      label: "\u2726 surprise unlocked!",
+    },
+    {
+      id: "discord",
+      threshold: 200,
+      type: "handle",
+      label: "\u2726 discord unlocked",
+      btnText: "wow really\nstill here?\nhere's my discord\nI guess",
     },
   ];
+
+  /* ---- Handle data (kept in JS, never in HTML) ------------------ */
+  function d(s) {
+    return s
+      .split("")
+      .map(function (c) {
+        return String.fromCharCode(c.charCodeAt(0) ^ 37);
+      })
+      .join("");
+  }
+
+  var HANDLE_DATA = {
+    leetcode: {
+      label: "LeetCode",
+      href: d(
+        "\x4d\x51\x51\x55\x56\x1f\x0a\x0a\x49\x40\x40\x51\x46\x4a\x41\x40\x0b\x46\x4a\x48\x0a\x51\x40\x41\x41\x5c\x47\x40\x44\x57\x4a\x5d",
+      ),
+      text: d(
+        "\x49\x40\x40\x51\x46\x4a\x41\x40\x0b\x46\x4a\x48\x0a\x51\x40\x41\x41\x5c\x47\x40\x44\x57\x4a\x5d",
+      ),
+    },
+    twitter: {
+      label: "Twitter / X",
+      href: d(
+        "\x4d\x51\x51\x55\x56\x1f\x0a\x0a\x5d\x0b\x46\x4a\x48\x0a\x51\x40\x41\x41\x5c\x47\x40\x44\x57\x4a\x5d",
+      ),
+      text: d(
+        "\x51\x52\x4c\x51\x51\x40\x57\x0b\x46\x4a\x48\x0a\x51\x40\x41\x41\x5c\x47\x40\x44\x57\x4a\x5d",
+      ),
+    },
+    "riot games username": {
+      label: "Riot / op.gg",
+      href: d(
+        "\x4d\x51\x51\x55\x56\x1f\x0a\x0a\x52\x52\x52\x0b\x4a\x55\x0b\x42\x42\x0a\x56\x50\x48\x48\x4a\x4b\x40\x57\x56\x0a\x4b\x44\x0a\x51\x40\x41\x41\x5c\x47\x40\x44\x57\x4a\x5d\x08\x5c\x4a\x56\x40\x4c",
+      ),
+      text: d(
+        "\x4a\x55\x0b\x42\x42\x0a\x56\x50\x48\x48\x4a\x4b\x40\x57\x56\x0a\x4b\x44\x0a\x51\x40\x41\x41\x5c\x47\x40\x44\x57\x4a\x5d\x08\x5c\x4a\x56\x40\x4c",
+      ),
+    },
+    discord: {
+      label: "Discord",
+      text: "add me on discord \u00b7 " + d("\x6f\x40\x43"),
+    },
+  };
 
   /* ---- ASCII art ------------------------------------------------ */
   var EARTH_ASCII = [
@@ -63,6 +127,26 @@
     "|\n(        )\n(            )\n(              )\n(            )\n(        )",
     "|\n(        )\n( [o______o] )\n(              )\n(            )\n(        )",
     "|\n(        )\n( [o______o] )\n(  [========]  )\n( |________| )\n(        )",
+  ];
+
+  /* ---- Disco colors --------------------------------------------- */
+  var DISCO_COLORS = [
+    "#ff0080",
+    "#ff6600",
+    "#ffcc00",
+    "#00ff88",
+    "#00ccff",
+    "#9933ff",
+    "#ff33cc",
+  ];
+  var DISCO_BG = [
+    "#1a0010",
+    "#1a0800",
+    "#0d1a00",
+    "#001a0d",
+    "#00101a",
+    "#0d001a",
+    "#1a0014",
   ];
 
   /* ---- State ---------------------------------------------------- */
@@ -106,16 +190,18 @@
     var moonAscii = makeEl("pre", "game-moon-ascii");
     var moonCounter = makeEl("div", "game-moon-counter");
     var upgradeBtn = makeEl("button", "game-upgrade-btn");
+    var notif = makeEl("div", "game-notif");
     moon.appendChild(moonAscii);
     moon.appendChild(moonCounter);
     moon.appendChild(upgradeBtn);
+    moon.appendChild(notif);
 
-    var notif = makeEl("div", "game-notif");
+    var discoBtn = makeEl("button", "game-disco-btn", "start disco");
     var resetBtn = makeEl("button", "game-reset-btn", "reset game");
 
     layer.appendChild(earth);
     layer.appendChild(moon);
-    layer.appendChild(notif);
+    layer.appendChild(discoBtn);
     layer.appendChild(resetBtn);
     document.body.appendChild(layer);
   }
@@ -155,14 +241,105 @@
     }, 2300);
   }
 
+  /* ---- Disco ---------------------------------------------------- */
+  var discoActive = false;
+  var discoInterval = null;
+  var discoTick = 0;
+  var discoEls = null;
+
+  var DISCO_GAME_IDS = [
+    "game-earth-ascii",
+    "game-launchpad",
+    "game-moon-ascii",
+    "game-moon-counter",
+  ];
+
+  function refreshDiscoCache() {
+    var container = document.querySelector(".container");
+    discoEls = container
+      ? Array.prototype.slice.call(container.querySelectorAll("*"))
+      : [];
+  }
+
+  function applyDisco() {
+    discoTick++;
+    var n = DISCO_COLORS.length;
+    document.body.style.backgroundColor = DISCO_BG[discoTick % DISCO_BG.length];
+    for (var i = 0; i < DISCO_GAME_IDS.length; i++) {
+      var el = document.getElementById(DISCO_GAME_IDS[i]);
+      if (el) el.style.color = DISCO_COLORS[(discoTick + i) % n];
+    }
+    for (var j = 0; j < discoEls.length; j++) {
+      discoEls[j].style.color = DISCO_COLORS[(discoTick + j + 3) % n];
+    }
+  }
+
+  function startDisco() {
+    if (discoActive) return;
+    discoActive = true;
+    refreshDiscoCache();
+    var discoBtn = document.getElementById("game-disco-btn");
+    if (discoBtn) {
+      discoBtn.textContent = "stop disco";
+      discoBtn.style.color = "#d8d8d8";
+    }
+    var resetBtn = document.getElementById("game-reset-btn");
+    if (resetBtn) resetBtn.style.color = "#d8d8d8";
+    discoInterval = setInterval(applyDisco, 500);
+  }
+
+  function stopDisco() {
+    if (!discoActive) return;
+    discoActive = false;
+    clearInterval(discoInterval);
+    discoInterval = null;
+    document.body.style.backgroundColor = "";
+    for (var i = 0; i < DISCO_GAME_IDS.length; i++) {
+      var el = document.getElementById(DISCO_GAME_IDS[i]);
+      if (el) el.style.color = "";
+    }
+    for (var j = 0; j < discoEls.length; j++) {
+      discoEls[j].style.color = "";
+    }
+    discoEls = null;
+    var discoBtn = document.getElementById("game-disco-btn");
+    if (discoBtn) {
+      discoBtn.textContent = "start disco";
+      discoBtn.style.color = "";
+    }
+    var resetBtn = document.getElementById("game-reset-btn");
+    if (resetBtn) resetBtn.style.color = "";
+  }
+
   /* ---- Unlocks -------------------------------------------------- */
   function applyUnlocks(state) {
-    var handles = document.querySelectorAll(".locked-handle");
-    for (var i = 0; i < handles.length; i++) {
-      var el = handles[i];
-      if (state.unlockedUpgrades.indexOf(el.dataset.unlock) !== -1) {
-        el.style.display = "";
+    var container = document.getElementById("contact-unlocks");
+    if (!container) return;
+    for (var i = 0; i < state.unlockedUpgrades.length; i++) {
+      var id = state.unlockedUpgrades[i];
+      var data = HANDLE_DATA[id];
+      if (!data) continue;
+      var elId = "handle-" + id.replace(/\s+/g, "-");
+      if (document.getElementById(elId)) continue;
+      var item = makeEl("div", elId);
+      item.className = "contact-item";
+      var labelEl = document.createElement("div");
+      labelEl.className = "section-label";
+      labelEl.textContent = data.label;
+      item.appendChild(labelEl);
+      if (data.href) {
+        var link = document.createElement("a");
+        link.href = data.href;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = data.text;
+        item.appendChild(link);
+      } else {
+        var span = document.createElement("span");
+        span.textContent = data.text;
+        item.appendChild(span);
       }
+      container.appendChild(item);
     }
   }
 
@@ -180,7 +357,16 @@
     if (!btn) return;
     var up = getAvailableUpgrade(state);
     if (up) {
-      var action = up.type === "handle" ? "unlock " + up.id : "upgrade base";
+      var action;
+      if (up.btnText) {
+        action = up.btnText;
+      } else if (up.type === "handle") {
+        action = "unlock " + up.id;
+      } else if (up.type === "disco") {
+        action = "still here?\nhave a surprise!";
+      } else {
+        action = "upgrade base";
+      }
       btn.textContent =
         action +
         "\n" +
@@ -205,11 +391,18 @@
       showNotification(up.label);
       updateMoonDisplay(state);
     }
+    if (up.type === "disco") {
+      showNotification(up.label);
+      startDisco();
+      var discoBtn = document.getElementById("game-disco-btn");
+      if (discoBtn) discoBtn.style.display = "block";
+    }
     saveState(state);
     updateUpgradeButton(state);
   }
 
   function resetGame(state) {
+    stopDisco();
     state.astronauts = 0;
     state.unlockedUpgrades = [];
     saveState(state);
@@ -217,9 +410,11 @@
     updateUpgradeButton(state);
     var launchpad = document.getElementById("game-launchpad");
     if (launchpad) launchpad.style.visibility = "visible";
-    var handles = document.querySelectorAll(".locked-handle");
-    for (var i = 0; i < handles.length; i++) {
-      handles[i].style.display = "none";
+    var discoBtn = document.getElementById("game-disco-btn");
+    if (discoBtn) discoBtn.style.display = "none";
+    var unlocks = document.getElementById("contact-unlocks");
+    if (unlocks) {
+      while (unlocks.firstChild) unlocks.removeChild(unlocks.firstChild);
     }
   }
 
@@ -275,6 +470,7 @@
 
     requestAnimationFrame(animate);
   }
+
   function onRocketLand(state) {
     rocketInFlight = false;
     state.astronauts += 1;
@@ -312,6 +508,7 @@
         window.scrollTo(0, 0);
         if (typeof window._themeInit === "function") window._themeInit();
         applyUnlocks(state);
+        if (discoActive) refreshDiscoCache();
       })
       .catch(function () {
         location.href = href;
@@ -379,6 +576,20 @@
       .addEventListener("click", function () {
         resetGame(state);
       });
+
+    document
+      .getElementById("game-disco-btn")
+      .addEventListener("click", function () {
+        if (discoActive) {
+          stopDisco();
+        } else {
+          startDisco();
+        }
+      });
+
+    if (state.unlockedUpgrades.indexOf("disco") !== -1) {
+      document.getElementById("game-disco-btn").style.display = "block";
+    }
 
     initPageSwap(state);
     startLoop(state);

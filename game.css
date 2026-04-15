@@ -100,6 +100,30 @@
   border-color: #333;
 }
 
+/* ---- Notification ---------------------------------------------- */
+#game-notif {
+  color: #c8c8c8;
+  font-size: 11px;
+  font-family: monospace;
+  letter-spacing: 1.5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  margin-top: 8px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) #game-notif {
+    color: #333;
+  }
+}
+
+[data-theme="light"] #game-notif {
+  color: #333;
+}
+
 /* ---- Reset ------------------------------------------------------ */
 #game-reset-btn {
   position: fixed;
@@ -118,6 +142,28 @@
 }
 
 #game-reset-btn:hover {
+  color: #666;
+}
+
+/* ---- Disco ------------------------------------------------------ */
+#game-disco-btn {
+  display: none;
+  position: fixed;
+  bottom: 44px;
+  right: 20px;
+  color: #333;
+  font-size: 10px;
+  font-family: monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  user-select: none;
+}
+
+#game-disco-btn:hover {
   color: #666;
 }
 
@@ -140,21 +186,4 @@
   z-index: 5;
   line-height: 1;
   transform: translateX(-50%);
-}
-
-/* ---- Notification ---------------------------------------------- */
-#game-notif {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #c8c8c8;
-  font-size: 11px;
-  font-family: monospace;
-  letter-spacing: 1.5px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 100;
-  white-space: nowrap;
 }
