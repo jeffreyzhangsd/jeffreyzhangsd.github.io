@@ -229,7 +229,7 @@
   /* ---- Page swap ------------------------------------------------ */
   function cloneContainerChildren(source, target) {
     while (target.firstChild) target.removeChild(target.firstChild);
-    var kids = source.childNodes;
+    var kids = Array.prototype.slice.call(source.childNodes);
     for (var i = 0; i < kids.length; i++) {
       target.appendChild(document.importNode(kids[i], true));
     }
@@ -238,6 +238,7 @@
   function swapContainer(href, state) {
     fetch(href)
       .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
         return r.text();
       })
       .then(function (html) {
@@ -270,14 +271,14 @@
       )
         return;
       if (link.target === "_blank") return;
+      if (link.hasAttribute("download")) return;
       e.preventDefault();
       history.pushState({}, "", href);
       swapContainer(href, state);
     });
 
     window.addEventListener("popstate", function () {
-      var href = location.pathname.split("/").pop() || "index.html";
-      swapContainer(href, state);
+      swapContainer(location.href, state);
     });
   }
 

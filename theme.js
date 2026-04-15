@@ -50,6 +50,8 @@
   window._themeInit = function () {
     updateButton(getStored());
     var btn = document.getElementById("theme-toggle");
-    if (btn) btn.addEventListener("click", toggle);
+    if (!btn) return;
+    btn.removeEventListener("click", toggle);
+    btn.addEventListener("click", toggle);
   };
 })();
