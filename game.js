@@ -227,8 +227,58 @@
   }
 
   /* ---- Page swap ------------------------------------------------ */
+  function cloneContainerChildren(source, target) {
+    while (target.firstChild) target.removeChild(target.firstChild);
+    var kids = source.childNodes;
+    for (var i = 0; i < kids.length; i++) {
+      target.appendChild(document.importNode(kids[i], true));
+    }
+  }
+
+  function swapContainer(href, state) {
+    fetch(href)
+      .then(function (r) {
+        return r.text();
+      })
+      .then(function (html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, "text/html");
+        var newContainer = doc.querySelector(".container");
+        var currentContainer = document.querySelector(".container");
+        if (!newContainer || !currentContainer) return;
+        cloneContainerChildren(newContainer, currentContainer);
+        document.title = doc.title;
+        if (typeof window._themeInit === "function") window._themeInit();
+        applyUnlocks(state);
+      })
+      .catch(function () {
+        location.href = href;
+      });
+  }
+
   function initPageSwap(state) {
-    /* filled in Task 5 */
+    document.addEventListener("click", function (e) {
+      var link = e.target.closest("a");
+      if (!link) return;
+      var href = link.getAttribute("href");
+      if (!href) return;
+      if (
+        href.indexOf("://") !== -1 ||
+        href.indexOf("mailto:") === 0 ||
+        href.indexOf("tel:") === 0 ||
+        href.charAt(0) === "#"
+      )
+        return;
+      if (link.target === "_blank") return;
+      e.preventDefault();
+      history.pushState({}, "", href);
+      swapContainer(href, state);
+    });
+
+    window.addEventListener("popstate", function () {
+      var href = location.pathname.split("/").pop() || "index.html";
+      swapContainer(href, state);
+    });
   }
 
   /* ---- Game loop ------------------------------------------------ */
