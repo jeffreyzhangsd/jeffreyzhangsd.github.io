@@ -90,14 +90,18 @@
     var moon = makeEl("div", "game-moon");
     var moonAscii = makeEl("pre", "game-moon-ascii");
     var moonCounter = makeEl("div", "game-moon-counter");
+    var upgradeBtn = makeEl("button", "game-upgrade-btn", "[ upgrade ]");
     moon.appendChild(moonAscii);
     moon.appendChild(moonCounter);
+    moon.appendChild(upgradeBtn);
 
     var notif = makeEl("div", "game-notif");
+    var resetBtn = makeEl("button", "game-reset-btn", "reset game");
 
     layer.appendChild(earth);
     layer.appendChild(moon);
     layer.appendChild(notif);
+    layer.appendChild(resetBtn);
     document.body.appendChild(layer);
   }
 
@@ -147,19 +151,45 @@
     }
   }
 
-  function checkUpgrades(state) {
+  function getAvailableUpgrade(state) {
     for (var i = 0; i < UPGRADES.length; i++) {
       var up = UPGRADES[i];
       if (state.unlockedUpgrades.indexOf(up.id) !== -1) continue;
-      if (state.astronauts < up.threshold) continue;
-      state.unlockedUpgrades.push(up.id);
-      if (up.type === "handle") {
-        showNotification(up.label);
-        applyUnlocks(state);
-      }
-      if (up.type === "moonbase") {
-        updateMoonDisplay(state);
-      }
+      if (state.astronauts >= up.threshold) return up;
+    }
+    return null;
+  }
+
+  function updateUpgradeButton(state) {
+    var btn = document.getElementById("game-upgrade-btn");
+    if (!btn) return;
+    btn.style.display = getAvailableUpgrade(state) ? "" : "none";
+  }
+
+  function fireUpgrade(state) {
+    var up = getAvailableUpgrade(state);
+    if (!up) return;
+    state.unlockedUpgrades.push(up.id);
+    if (up.type === "handle") {
+      showNotification(up.label);
+      applyUnlocks(state);
+    }
+    if (up.type === "moonbase") {
+      updateMoonDisplay(state);
+    }
+    saveState(state);
+    updateUpgradeButton(state);
+  }
+
+  function resetGame(state) {
+    state.astronauts = 0;
+    state.unlockedUpgrades = [];
+    saveState(state);
+    updateMoonDisplay(state);
+    updateUpgradeButton(state);
+    var handles = document.querySelectorAll(".locked-handle");
+    for (var i = 0; i < handles.length; i++) {
+      handles[i].style.display = "none";
     }
   }
 
@@ -218,8 +248,8 @@
   function onRocketLand(state) {
     rocketInFlight = false;
     state.astronauts += 1;
-    checkUpgrades(state);
     updateMoonDisplay(state);
+    updateUpgradeButton(state);
     saveState(state);
 
     var launchpad = document.getElementById("game-launchpad");
@@ -306,6 +336,20 @@
     injectGameLayer();
     updateMoonDisplay(state);
     applyUnlocks(state);
+    updateUpgradeButton(state);
+
+    document
+      .getElementById("game-upgrade-btn")
+      .addEventListener("click", function () {
+        fireUpgrade(state);
+      });
+
+    document
+      .getElementById("game-reset-btn")
+      .addEventListener("click", function () {
+        resetGame(state);
+      });
+
     initPageSwap(state);
     startLoop(state);
   }

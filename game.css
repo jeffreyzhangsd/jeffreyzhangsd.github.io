@@ -49,7 +49,46 @@
 #game-moon pre {
   margin: 0;
   font-size: 13px;
-  line-height: 1.1;
+  line-height: 1.4;
+}
+
+#game-upgrade-btn {
+  display: none;
+  margin-top: 8px;
+  color: #c8c8c8;
+  font-size: 11px;
+  font-family: monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+#game-upgrade-btn:hover {
+  color: #fff;
+}
+
+/* ---- Reset ------------------------------------------------------ */
+#game-reset-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: #333;
+  font-size: 10px;
+  font-family: monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  user-select: none;
+}
+
+#game-reset-btn:hover {
+  color: #666;
 }
 
 #game-moon-counter {
