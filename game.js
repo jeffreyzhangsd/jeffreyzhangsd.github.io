@@ -249,6 +249,7 @@
         if (!newContainer || !currentContainer) return;
         cloneContainerChildren(newContainer, currentContainer);
         document.title = doc.title;
+        window.scrollTo(0, 0);
         if (typeof window._themeInit === "function") window._themeInit();
         applyUnlocks(state);
       })
@@ -259,7 +260,12 @@
 
   function initPageSwap(state) {
     document.addEventListener("click", function (e) {
-      var link = e.target.closest("a");
+      var el = e.target;
+      while (el && el !== document) {
+        if (el.tagName === "A") break;
+        el = el.parentNode;
+      }
+      var link = el && el.tagName === "A" ? el : null;
       if (!link) return;
       var href = link.getAttribute("href");
       if (!href) return;
