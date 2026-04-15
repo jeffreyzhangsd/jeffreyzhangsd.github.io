@@ -1,0 +1,9 @@
+# Docs
+docs/
+*.md
+
+# Brainstorm sessions
+.superpowers/
+
+# Claude config
+.claude/
