@@ -112,6 +112,7 @@
   margin-top: 8px;
   text-align: center;
   line-height: 1.5;
+  white-space: pre;
 }
 
 @media (prefers-color-scheme: light) {
@@ -165,6 +166,19 @@
 
 #game-disco-btn:hover {
   color: #666;
+}
+
+#game-disco-volume {
+  display: none;
+  position: fixed;
+  bottom: 68px;
+  right: 20px;
+  width: 80px;
+  height: 14px;
+  cursor: pointer;
+  pointer-events: auto;
+  accent-color: #888;
+  background: none;
 }
 
 #game-moon-counter {

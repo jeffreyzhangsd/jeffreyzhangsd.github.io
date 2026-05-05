@@ -55,7 +55,8 @@
       id: "disco",
       threshold: 100,
       type: "disco",
-      label: "\u2726 surprise unlocked!",
+      label:
+        "\u2726 surprise unlocked!\n(volume alert \u2014 slider bottom right)",
     },
     {
       id: "discord",
@@ -149,6 +150,32 @@
     "#1a0014",
   ];
 
+  /* ---- Disco audio ---------------------------------------------- */
+  var DISCO_AUDIO_SRC = "/static/media/showtime.mp3";
+  var DISCO_VOLUME_KEY = "game-disco-volume";
+  var discoAudio = null;
+  var discoVolume = (function () {
+    try {
+      var raw = localStorage.getItem(DISCO_VOLUME_KEY);
+      var v = raw === null ? 0.5 : parseFloat(raw);
+      return isNaN(v) ? 0.5 : Math.max(0, Math.min(1, v));
+    } catch (_) {
+      return 0.5;
+    }
+  })();
+
+  // Lazy-init: only construct Audio when first needed so the mp3 doesn't load
+  // until the user actually triggers disco. Squared mapping for perceived loudness.
+  function getDiscoAudio() {
+    if (!discoAudio) {
+      discoAudio = new Audio(DISCO_AUDIO_SRC);
+      discoAudio.loop = true;
+      discoAudio.preload = "auto";
+    }
+    discoAudio.volume = discoVolume * discoVolume;
+    return discoAudio;
+  }
+
   /* ---- State ---------------------------------------------------- */
   function defaultState() {
     return { astronauts: 0, unlockedUpgrades: [] };
@@ -197,11 +224,28 @@
     moon.appendChild(notif);
 
     var discoBtn = makeEl("button", "game-disco-btn", "start disco");
+    var discoVol = makeEl("input", "game-disco-volume");
+    discoVol.type = "range";
+    discoVol.min = "0";
+    discoVol.max = "1";
+    discoVol.step = "0.01";
+    discoVol.value = String(discoVolume);
+    discoVol.setAttribute("aria-label", "disco volume");
+    discoVol.addEventListener("input", function (e) {
+      var v = parseFloat(e.target.value);
+      if (isNaN(v)) return;
+      discoVolume = Math.max(0, Math.min(1, v));
+      try {
+        localStorage.setItem(DISCO_VOLUME_KEY, String(discoVolume));
+      } catch (_) {}
+      if (discoAudio) discoAudio.volume = discoVolume * discoVolume;
+    });
     var resetBtn = makeEl("button", "game-reset-btn", "reset game");
 
     layer.appendChild(earth);
     layer.appendChild(moon);
     layer.appendChild(discoBtn);
+    layer.appendChild(discoVol);
     layer.appendChild(resetBtn);
     document.body.appendChild(layer);
   }
@@ -286,6 +330,13 @@
     var resetBtn = document.getElementById("game-reset-btn");
     if (resetBtn) resetBtn.style.color = "#d8d8d8";
     discoInterval = setInterval(applyDisco, 500);
+    // Music — autoplay may be blocked until user gesture; the disco button click
+    // IS that gesture, so this should succeed when user clicks. .catch() swallows
+    // the rare blocked case so we don't break disco visuals.
+    var audio = getDiscoAudio();
+    audio.currentTime = 0;
+    var p = audio.play();
+    if (p && typeof p.catch === "function") p.catch(function () {});
   }
 
   function stopDisco() {
@@ -309,6 +360,10 @@
     }
     var resetBtn = document.getElementById("game-reset-btn");
     if (resetBtn) resetBtn.style.color = "";
+    if (discoAudio) {
+      discoAudio.pause();
+      discoAudio.currentTime = 0;
+    }
   }
 
   /* ---- Unlocks -------------------------------------------------- */
@@ -396,6 +451,8 @@
       startDisco();
       var discoBtn = document.getElementById("game-disco-btn");
       if (discoBtn) discoBtn.style.display = "block";
+      var discoVol = document.getElementById("game-disco-volume");
+      if (discoVol) discoVol.style.display = "block";
     }
     saveState(state);
     updateUpgradeButton(state);
@@ -412,6 +469,8 @@
     if (launchpad) launchpad.style.visibility = "visible";
     var discoBtn = document.getElementById("game-disco-btn");
     if (discoBtn) discoBtn.style.display = "none";
+    var discoVol = document.getElementById("game-disco-volume");
+    if (discoVol) discoVol.style.display = "none";
     var unlocks = document.getElementById("contact-unlocks");
     if (unlocks) {
       while (unlocks.firstChild) unlocks.removeChild(unlocks.firstChild);
@@ -589,7 +648,14 @@
 
     if (state.unlockedUpgrades.indexOf("disco") !== -1) {
       document.getElementById("game-disco-btn").style.display = "block";
+      var discoVol = document.getElementById("game-disco-volume");
+      if (discoVol) discoVol.style.display = "block";
     }
+
+    // Pause music on tab close so backgrounded autoplay doesn't keep playing.
+    window.addEventListener("beforeunload", function () {
+      if (discoAudio) discoAudio.pause();
+    });
 
     initPageSwap(state);
     startLoop(state);
