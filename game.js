@@ -55,8 +55,7 @@
       id: "disco",
       threshold: 100,
       type: "disco",
-      label:
-        "\u2726 surprise unlocked!\n(volume alert \u2014 slider bottom right)",
+      label: "\u2726 surprise unlocked!",
     },
     {
       id: "discord",
@@ -418,7 +417,7 @@
       } else if (up.type === "handle") {
         action = "unlock " + up.id;
       } else if (up.type === "disco") {
-        action = "still here?\nhave a surprise!";
+        action = "still here?\nhave a surprise!\n(volume alert)";
       } else {
         action = "upgrade base";
       }
