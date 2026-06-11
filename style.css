@@ -241,3 +241,140 @@ a:focus-visible {
 .contact-item a:hover {
   color: var(--text-primary);
 }
+
+/* ── Motion layer (2026 revamp) ─────────────────────────────── */
+
+/* constellation canvas sits behind everything */
+#backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.container {
+  z-index: 1;
+}
+
+/* staggered entrance — .reveal added by motion.js (no-JS stays visible) */
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.45s ease-out,
+    transform 0.45s ease-out;
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* tagline decode target — hidden until JS reveals to avoid double paint */
+.decode {
+  visibility: hidden;
+}
+
+/* underline draws in from the left on text links */
+.section-link,
+.back-nav,
+.contact-item a,
+.project-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition:
+    background-size 0.25s ease,
+    color 0.2s,
+    transform 0.25s ease;
+}
+
+.section-link:hover,
+.back-nav:hover,
+.contact-item a:hover,
+.project-link:hover {
+  background-size: 100% 1px;
+}
+
+/* arrow links nudge toward their direction */
+.section-link:hover {
+  transform: translateX(3px);
+}
+
+.back-nav:hover {
+  transform: translateX(-3px);
+}
+
+/* project rows: hairline accent + slide on hover */
+.project {
+  border-left: 1px solid transparent;
+  padding-left: 0;
+  transition:
+    border-color 0.25s ease,
+    padding-left 0.25s ease;
+}
+
+.project:hover {
+  border-left-color: var(--text-muted);
+  padding-left: 10px;
+}
+
+/* name + toggle get smooth magnetic return */
+.header .name,
+.theme-toggle {
+  transition: transform 0.18s ease-out;
+}
+
+/* cross-document page transitions (Chrome/Safari; no-op elsewhere) */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation-duration: 0.18s;
+}
+
+::view-transition-new(root) {
+  animation-duration: 0.26s;
+}
+
+html.theme-ripple::view-transition-old(root) {
+  animation: none;
+}
+
+html.theme-ripple::view-transition-new(root) {
+  animation: theme-clip 0.45s ease-in;
+}
+
+@keyframes theme-clip {
+  from {
+    clip-path: circle(0 at var(--ripple-x, 100%) var(--ripple-y, 0%));
+  }
+  to {
+    clip-path: circle(150% at var(--ripple-x, 100%) var(--ripple-y, 0%));
+  }
+}
+
+/* kill the whole layer for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #backdrop {
+    display: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .decode {
+    visibility: visible;
+  }
+  .section-link:hover,
+  .back-nav:hover {
+    transform: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
