@@ -196,6 +196,15 @@ a:focus-visible {
 }
 
 /* ── Project list ───────────────────────────────────────────── */
+.project-group {
+  margin-top: 28px;
+  margin-bottom: 4px;
+}
+
+.project-group:first-child {
+  margin-top: 0;
+}
+
 .project {
   border-top: 1px solid var(--divider);
   padding: 14px 0;
