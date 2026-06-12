@@ -186,36 +186,44 @@
 
   // Each stage is a list of lines; #game-moon pre centers every line, so the
   // oval comes from symmetric line widths. Stages 1+ get a beacon that blinks.
-  // Line widths taper (short, mid, widest, mid, short) so the centered
-  // rendering reads as an oval, not a box.
+  // Line widths taper toward both poles (7 rows, widest in the middle) so
+  // the centered rendering reads as a circle, not a box.
   var MOON_BODIES = [
     [
-      "(  .   )",
-      "(  o    .   )",
-      "( .    o     . )",
-      "(  .     o  )",
-      "(   o   )",
+      "(  .  )",
+      "(  o    .  )",
+      "( .    o    . )",
+      "(  .     o   . )",
+      "( .    o    . )",
+      "(  .    o  )",
+      "(  o  )",
     ],
     [
-      "( [o]  )",
-      "(  o    .   )",
-      "( .    o     . )",
-      "(  .     o  )",
-      "(   o   )",
-    ],
-    [
-      "( [o__o] )",
-      "( [====]    . )",
-      "( .    o     . )",
-      "(  .     o  )",
-      "(   o   )",
+      "( [o] )",
+      "(  o    .  )",
+      "( .    o    . )",
+      "(  .     o   . )",
+      "( .    o    . )",
+      "(  .    o  )",
+      "(  o  )",
     ],
     [
       "( [o__o] )",
-      "( [========] )",
-      "( |________|  . )",
-      "(  .     o  )",
-      "(   o   )",
+      "( [====]   . )",
+      "( .    o    . )",
+      "(  .     o   . )",
+      "( .    o    . )",
+      "(  .    o  )",
+      "(  o  )",
+    ],
+    [
+      "( [o__o] )",
+      "( [======] )",
+      "( |______|  . )",
+      "(  .     o   . )",
+      "( .    o    . )",
+      "(  .    o  )",
+      "(  o  )",
     ],
   ];
 
