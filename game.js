@@ -187,52 +187,32 @@
   // Each stage is a list of lines; #game-moon pre centers every line, so the
   // oval comes from symmetric line widths. Stages 1+ get a beacon that blinks.
   // Every line is exactly 17 chars (space-padded), so the centered <pre>
-  // can't shuffle rows horizontally — base structures stay on one axis.
-  // The circle comes from where the parens sit inside the fixed grid.
-  var MOON_BODIES = [
-    [
-      "    (   .   )    ",
-      "  ( o    .    )  ",
-      "(  .    o     . )",
-      "( .     o     . )",
-      "(  .     o    . )",
-      "  ( .     o   )  ",
-      "    (   o   )    ",
-    ],
-    [
-      "     ( [o] )     ",
-      "  ( o    .    )  ",
-      "(  .    o     . )",
-      "( .     o     . )",
-      "(  .     o    . )",
-      "  ( .     o   )  ",
-      "    (   o   )    ",
-    ],
-    [
-      "   ( [o__o] )    ",
-      "  ( [======] )   ",
-      "(  .    o     . )",
-      "( .     o     . )",
-      "(  .     o    . )",
-      "  ( .     o   )  ",
-      "    (   o   )    ",
-    ],
-    [
-      "   ( [o__o] )    ",
-      "  ( [======] )   ",
-      "(  |________| . )",
-      "( .     o     . )",
-      "(  .     o    . )",
-      "  ( .     o   )  ",
-      "    (   o   )    ",
-    ],
+  // can't shuffle rows horizontally. The moon circle is identical at every
+  // stage; base structures stack ON the surface above it, beacon on top.
+  var MOON_CIRCLE = [
+    "    (   .   )    ",
+    "  (  o    .   )  ",
+    " (  .    o    . )",
+    "( .     o     . )",
+    " ( .     o    . )",
+    "  ( .     o   )  ",
+    "    (   o   )    ",
+  ];
+
+  var MOON_STRUCTURES = [
+    [],
+    ["       [o]       "],
+    ["     [o__o]      ", "    [======]     "],
+    ["     [o__o]      ", "    [======]     ", "   |________|    "],
   ];
 
   function moonFrame(stage, beaconOn) {
-    var lines = MOON_BODIES[stage].slice();
-    if (stage > 0) {
-      lines = [beaconOn ? "*" : "·", "|"].concat(lines);
-    }
+    if (stage === 0) return MOON_CIRCLE.join("\n");
+    var beacon = beaconOn ? "*" : "·";
+    var lines = [
+      "        " + beacon + "        ",
+      "        |        ",
+    ].concat(MOON_STRUCTURES[stage], MOON_CIRCLE);
     return lines.join("\n");
   }
 
