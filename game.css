@@ -84,6 +84,29 @@
   border-color: #999;
 }
 
+/* Mechanics upgrades = green, contact-handle unlocks = amber */
+#game-upgrade-btn.kind-game,
+#game-notif.kind-game {
+  color: #7aa87a;
+  border-color: #4d6b4d;
+}
+
+#game-upgrade-btn.kind-game:hover {
+  color: #9fcf9f;
+  border-color: #7aa87a;
+}
+
+#game-upgrade-btn.kind-handle,
+#game-notif.kind-handle {
+  color: #c2a05c;
+  border-color: #7d6a3f;
+}
+
+#game-upgrade-btn.kind-handle:hover {
+  color: #e3c47e;
+  border-color: #c2a05c;
+}
+
 /* ---- Light mode overrides --------------------------------------- */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) #game-upgrade-btn {
@@ -104,6 +127,31 @@
 [data-theme="light"] #game-upgrade-btn:hover {
   color: #000;
   border-color: #333;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) #game-upgrade-btn.kind-game,
+  :root:not([data-theme]) #game-notif.kind-game {
+    color: #2e6b2e;
+    border-color: #5a8a5a;
+  }
+  :root:not([data-theme]) #game-upgrade-btn.kind-handle,
+  :root:not([data-theme]) #game-notif.kind-handle {
+    color: #8a6a1f;
+    border-color: #b0904a;
+  }
+}
+
+[data-theme="light"] #game-upgrade-btn.kind-game,
+[data-theme="light"] #game-notif.kind-game {
+  color: #2e6b2e;
+  border-color: #5a8a5a;
+}
+
+[data-theme="light"] #game-upgrade-btn.kind-handle,
+[data-theme="light"] #game-notif.kind-handle {
+  color: #8a6a1f;
+  border-color: #b0904a;
 }
 
 /* ---- Notification ---------------------------------------------- */

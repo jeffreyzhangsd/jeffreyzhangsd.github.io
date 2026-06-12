@@ -409,10 +409,11 @@
   /* ---- Notification -------------------------------------------- */
   var notifTimeout = null;
 
-  function showNotification(text) {
+  function showNotification(text, kindClass) {
     var el = document.getElementById("game-notif");
     if (!el) return;
     if (notifTimeout) clearTimeout(notifTimeout);
+    el.className = kindClass || "";
     el.textContent = text;
     el.style.opacity = "1";
     notifTimeout = setTimeout(function () {
@@ -542,11 +543,22 @@
     return null;
   }
 
+  // Mechanics upgrades render green, contact-handle unlocks amber, so the
+  // player can tell "improves the game" from "reveals a handle" at a glance.
+  function upgradeKindClass(up) {
+    if (up.type === "handle") return "kind-handle";
+    if (up.type === "moonbase" || up.type === "game") return "kind-game";
+    return "";
+  }
+
   function updateUpgradeButton(state) {
     var btn = document.getElementById("game-upgrade-btn");
     if (!btn) return;
     var up = getAvailableUpgrade(state);
+    btn.classList.remove("kind-game", "kind-handle");
     if (up) {
+      var kind = upgradeKindClass(up);
+      if (kind) btn.classList.add(kind);
       var action;
       if (up.btnText) {
         action = up.btnText;
@@ -575,15 +587,15 @@
     if (!up) return;
     state.unlockedUpgrades.push(up.id);
     if (up.type === "handle") {
-      showNotification(up.label);
+      showNotification(up.label, "kind-handle");
       applyUnlocks(state);
     }
     if (up.type === "moonbase") {
-      showNotification(up.label);
+      showNotification(up.label, "kind-game");
       updateMoonDisplay(state);
     }
     if (up.type === "game") {
-      showNotification(up.label);
+      showNotification(up.label, "kind-game");
     }
     if (up.type === "disco") {
       showNotification(up.label);
