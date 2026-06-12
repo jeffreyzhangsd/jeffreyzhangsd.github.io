@@ -93,11 +93,11 @@
       btnText: "research\nwarp drive",
     },
     {
-      id: "discord",
+      id: "steam",
       threshold: 200,
       type: "handle",
-      label: "\u2726 discord unlocked",
-      btnText: "wow really\nstill here?\nhere's my discord\nI guess",
+      label: "\u2726 steam unlocked",
+      btnText: "wow really\nstill here?\nhere's my steam\nI guess",
     },
   ];
 
@@ -139,9 +139,14 @@
         "\x4a\x55\x0b\x42\x42\x0a\x56\x50\x48\x48\x4a\x4b\x40\x57\x56\x0a\x4b\x44\x0a\x51\x40\x41\x41\x5c\x47\x40\x44\x57\x4a\x5d\x08\x5c\x4a\x56\x40\x4c",
       ),
     },
-    discord: {
-      label: "Discord",
-      text: "add me on discord \u00b7 " + d("\x6f\x40\x43"),
+    steam: {
+      label: "Steam",
+      href: d(
+        "\x4d\x51\x51\x55\x56\x1f\x0a\x0a\x56\x51\x40\x44\x48\x46\x4a\x48\x48\x50\x4b\x4c\x51\x5c\x0b\x46\x4a\x48\x0a\x4c\x41\x0a\x48\x5c\x4b\x44\x48\x40\x4f\x40\x43",
+      ),
+      text: d(
+        "\x56\x51\x40\x44\x48\x46\x4a\x48\x48\x50\x4b\x4c\x51\x5c\x0b\x46\x4a\x48\x0a\x4c\x41\x0a\x48\x5c\x4b\x44\x48\x40\x4f\x40\x43",
+      ),
     },
   };
 
