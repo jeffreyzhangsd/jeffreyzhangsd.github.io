@@ -11,7 +11,9 @@
   var STORAGE_KEY = "jz_game";
   var TICK_MS = 1000;
   var LAUNCH_EVERY_N_TICKS = 9;
-  var FLIGHT_MS = 5000;
+  // Must stay under the fastest launch cadence (5 ticks = 5s) so a rocket
+  // always lands before the next one wants the pad.
+  var FLIGHT_MS = 4000;
 
   var UPGRADES = [
     {
@@ -73,11 +75,11 @@
       btnText: "unlock riot\ngames username",
     },
     {
-      id: "autopilot",
+      id: "rapid-launch",
       threshold: 80,
       type: "game",
-      label: "\u2726 launch autopilot online",
-      btnText: "automate\nlaunches",
+      label: "\u2726 rapid launch protocol \u2014 even faster launches",
+      btnText: "speed up\nlaunches",
     },
     {
       id: "disco",
@@ -184,34 +186,36 @@
 
   // Each stage is a list of lines; #game-moon pre centers every line, so the
   // oval comes from symmetric line widths. Stages 1+ get a beacon that blinks.
+  // Line widths taper (short, mid, widest, mid, short) so the centered
+  // rendering reads as an oval, not a box.
   var MOON_BODIES = [
     [
-      "(  .   o   )",
-      "( o    .   . )",
-      "(  .    o   . )",
-      "( .    o    . )",
-      "(   .    .   )",
+      "(  .   )",
+      "(  o    .   )",
+      "( .    o     . )",
+      "(  .     o  )",
+      "(   o   )",
     ],
     [
-      "(  [o]   .  )",
-      "( o    .   . )",
-      "(  .    o   . )",
-      "( .    o    . )",
-      "(   .    .   )",
+      "( [o]  )",
+      "(  o    .   )",
+      "( .    o     . )",
+      "(  .     o  )",
+      "(   o   )",
     ],
     [
-      "(  [o__o]  . )",
-      "( [=====]  . )",
-      "(  .    o   . )",
-      "( .    o    . )",
-      "(   .    .   )",
+      "( [o__o] )",
+      "( [====]    . )",
+      "( .    o     . )",
+      "(  .     o  )",
+      "(   o   )",
     ],
     [
-      "( [o__o] [o] )",
-      "( [=======]  )",
-      "( |_______|  )",
-      "(  .   o   . )",
-      "(   .    .   )",
+      "( [o__o] )",
+      "( [========] )",
+      "( |________|  . )",
+      "(  .     o  )",
+      "(   o   )",
     ],
   ];
 
@@ -388,7 +392,7 @@
   }
 
   function launchEveryTicks(state) {
-    if (has(state, "autopilot")) return 6;
+    if (has(state, "rapid-launch")) return 5;
     if (has(state, "launch-team")) return 7;
     return LAUNCH_EVERY_N_TICKS;
   }
