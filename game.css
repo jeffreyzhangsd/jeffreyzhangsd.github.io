@@ -22,6 +22,12 @@
   color: #3a5a3a;
   line-height: 1.2;
   user-select: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+#game-earth:hover {
+  color: #4d774d;
 }
 
 #game-earth pre {
@@ -189,6 +195,22 @@
   text-align: center;
 }
 
+#game-moon-counter.pulse {
+  animation: counter-pulse 0.5s ease;
+}
+
+@keyframes counter-pulse {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* ---- Rocket (in-flight) ---------------------------------------- */
 .game-rocket {
   position: fixed;
@@ -199,4 +221,26 @@
   z-index: 5;
   line-height: 1;
   transform: translateX(-50%);
+}
+
+.game-trail {
+  position: fixed;
+  color: #666;
+  font-family: monospace;
+  font-size: 10px;
+  pointer-events: none;
+  z-index: 4;
+  line-height: 1;
+  transform: translateX(-50%);
+  animation: trail-fade 0.7s ease-out forwards;
+}
+
+@keyframes trail-fade {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
 }

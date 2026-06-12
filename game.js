@@ -21,10 +21,24 @@
       label: "\u2726 moon base established",
     },
     {
+      id: "bigger-rockets",
+      threshold: 8,
+      type: "game",
+      label: "\u2726 cargo bay built \u2014 rockets carry 2",
+      btnText: "build bigger\nrockets",
+    },
+    {
       id: "leetcode",
       threshold: 12,
       type: "handle",
       label: "\u2726 leetcode unlocked",
+    },
+    {
+      id: "launch-team",
+      threshold: 16,
+      type: "game",
+      label: "\u2726 mission control hired \u2014 faster launches",
+      btnText: "hire mission\ncontrol",
     },
     {
       id: "moonbase-2",
@@ -37,6 +51,13 @@
       threshold: 30,
       type: "handle",
       label: "\u2726 twitter unlocked",
+    },
+    {
+      id: "rocket-fleet",
+      threshold: 38,
+      type: "game",
+      label: "\u2726 fleet commissioned \u2014 rockets carry 3",
+      btnText: "commission\nrocket fleet",
     },
     {
       id: "moonbase-3",
@@ -52,10 +73,24 @@
       btnText: "unlock riot\ngames username",
     },
     {
+      id: "autopilot",
+      threshold: 80,
+      type: "game",
+      label: "\u2726 launch autopilot online",
+      btnText: "automate\nlaunches",
+    },
+    {
       id: "disco",
       threshold: 100,
       type: "disco",
       label: "\u2726 surprise unlocked!",
+    },
+    {
+      id: "warp-drive",
+      threshold: 150,
+      type: "game",
+      label: "\u2726 warp drive \u2014 rockets carry 5",
+      btnText: "research\nwarp drive",
     },
     {
       id: "discord",
@@ -111,23 +146,77 @@
   };
 
   /* ---- ASCII art ------------------------------------------------ */
-  var EARTH_ASCII = [
-    "  .-----.",
-    " / ~. .~ \\",
-    "| . ~.~ . |",
-    "| ~. . .~ |",
-    " \\ .~. . /",
-    "  '-----'",
-  ].join("\n");
+  // Earth rotates: each row is a cyclic 12-char "map" band; a frame shows a
+  // window into each band, shifted by the rotation offset.
+  var EARTH_MAP = [
+    "  ~~~   .   ",
+    " ~~~~~ .  . ",
+    "~~~.~~~   . ",
+    " ~~  ~~ .   ",
+  ];
+
+  function rotStr(s, k) {
+    k = k % s.length;
+    return s.slice(k) + s.slice(0, k);
+  }
+
+  function earthFrame(off) {
+    var a = rotStr(EARTH_MAP[0], off).slice(0, 7);
+    var b = rotStr(EARTH_MAP[1], off).slice(0, 9);
+    var c = rotStr(EARTH_MAP[2], off).slice(0, 9);
+    var d = rotStr(EARTH_MAP[3], off).slice(0, 7);
+    return [
+      "  .-------.",
+      " / " + a + " \\",
+      "| " + b + " |",
+      "| " + c + " |",
+      " \\ " + d + " /",
+      "  '-------'",
+    ].join("\n");
+  }
 
   var LAUNCHPAD_ASCII = " ^ \n/|\\";
 
-  var MOON_STAGES = [
-    "(        )\n(            )\n(              )\n(            )\n(        )",
-    "|\n(        )\n(            )\n(              )\n(            )\n(        )",
-    "|\n(        )\n( [o______o] )\n(              )\n(            )\n(        )",
-    "|\n(        )\n( [o______o] )\n(  [========]  )\n( |________| )\n(        )",
+  // Each stage is a list of lines; #game-moon pre centers every line, so the
+  // oval comes from symmetric line widths. Stages 1+ get a beacon that blinks.
+  var MOON_BODIES = [
+    [
+      "(  .   o   )",
+      "( o    .   . )",
+      "(  .    o   . )",
+      "( .    o    . )",
+      "(   .    .   )",
+    ],
+    [
+      "(  [o]   .  )",
+      "( o    .   . )",
+      "(  .    o   . )",
+      "( .    o    . )",
+      "(   .    .   )",
+    ],
+    [
+      "(  [o__o]  . )",
+      "( [=====]  . )",
+      "(  .    o   . )",
+      "( .    o    . )",
+      "(   .    .   )",
+    ],
+    [
+      "( [o__o] [o] )",
+      "( [=======]  )",
+      "( |_______|  )",
+      "(  .   o   . )",
+      "(   .    .   )",
+    ],
   ];
+
+  function moonFrame(stage, beaconOn) {
+    var lines = MOON_BODIES[stage].slice();
+    if (stage > 0) {
+      lines = [beaconOn ? "*" : "·", "|"].concat(lines);
+    }
+    return lines.join("\n");
+  }
 
   /* ---- Disco colors --------------------------------------------- */
   var DISCO_COLORS = [
@@ -207,8 +296,9 @@
     var layer = makeEl("div", "game-layer");
 
     var earth = makeEl("div", "game-earth");
+    earth.title = "launch a rocket";
     var launchpad = makeEl("pre", "game-launchpad", LAUNCHPAD_ASCII);
-    var earthAscii = makeEl("pre", "game-earth-ascii", EARTH_ASCII);
+    var earthAscii = makeEl("pre", "game-earth-ascii", earthFrame(0));
     earth.appendChild(launchpad);
     earth.appendChild(earthAscii);
 
@@ -258,16 +348,44 @@
     return 0;
   }
 
+  var beaconOn = true;
+
   function updateMoonDisplay(state) {
     var moonAscii = document.getElementById("game-moon-ascii");
     var moonCounter = document.getElementById("game-moon-counter");
     if (!moonAscii || !moonCounter) return;
-    moonAscii.textContent = MOON_STAGES[getMoonStage(state)];
+    moonAscii.textContent = moonFrame(getMoonStage(state), beaconOn);
     var n = state.astronauts;
     moonCounter.textContent =
       n === 0
         ? ""
         : "\u00b7 " + n + " astronaut" + (n === 1 ? "" : "s") + " \u00b7";
+  }
+
+  function pulseCounter() {
+    var el = document.getElementById("game-moon-counter");
+    if (!el) return;
+    el.classList.remove("pulse");
+    void el.offsetWidth; // restart the CSS animation
+    el.classList.add("pulse");
+  }
+
+  /* ---- Derived game stats (from unlocked upgrades) -------------- */
+  function has(state, id) {
+    return state.unlockedUpgrades.indexOf(id) !== -1;
+  }
+
+  function crewSize(state) {
+    if (has(state, "warp-drive")) return 5;
+    if (has(state, "rocket-fleet")) return 3;
+    if (has(state, "bigger-rockets")) return 2;
+    return 1;
+  }
+
+  function launchEveryTicks(state) {
+    if (has(state, "autopilot")) return 6;
+    if (has(state, "launch-team")) return 7;
+    return LAUNCH_EVERY_N_TICKS;
   }
 
   /* ---- Notification -------------------------------------------- */
@@ -421,6 +539,7 @@
       } else {
         action = "upgrade base";
       }
+      // "game" upgrades always define btnText, so they're covered above
       btn.textContent =
         action +
         "\n" +
@@ -444,6 +563,9 @@
     if (up.type === "moonbase") {
       showNotification(up.label);
       updateMoonDisplay(state);
+    }
+    if (up.type === "game") {
+      showNotification(up.label);
     }
     if (up.type === "disco") {
       showNotification(up.label);
@@ -510,6 +632,19 @@
     document.getElementById("game-layer").appendChild(rocket);
 
     var startTime = performance.now();
+    var lastTrail = 0;
+
+    function dropTrail(x, y) {
+      var dot = document.createElement("div");
+      dot.className = "game-trail";
+      dot.textContent = "·";
+      dot.style.left = x + "px";
+      dot.style.top = y + "px";
+      document.getElementById("game-layer").appendChild(dot);
+      dot.addEventListener("animationend", function () {
+        dot.remove();
+      });
+    }
 
     function animate(now) {
       var t = Math.min((now - startTime) / FLIGHT_MS, 1);
@@ -518,6 +653,10 @@
       var y = u * u * startY + 2 * u * t * midY + t * t * endY;
       rocket.style.left = x + "px";
       rocket.style.top = y + "px";
+      if (now - lastTrail > 160) {
+        lastTrail = now;
+        dropTrail(x, y + 12);
+      }
       if (t < 1) {
         requestAnimationFrame(animate);
       } else {
@@ -531,8 +670,9 @@
 
   function onRocketLand(state) {
     rocketInFlight = false;
-    state.astronauts += 1;
+    state.astronauts += crewSize(state);
     updateMoonDisplay(state);
+    pulseCounter();
     updateUpgradeButton(state);
     saveState(state);
 
@@ -609,15 +749,49 @@
   function startLoop(state) {
     setInterval(function () {
       tickCount += 1;
-      if (tickCount % LAUNCH_EVERY_N_TICKS === 0) {
+      if (tickCount % launchEveryTicks(state) === 0) {
         launchRocket(state);
       }
     }, TICK_MS);
   }
 
+  /* ---- Ambient animation (earth spin + beacon blink) ------------ */
+  var earthOffset = 0;
+
+  function startAmbient(state) {
+    setInterval(function () {
+      if (document.hidden) return;
+      earthOffset += 1;
+      beaconOn = !beaconOn;
+      var earthAscii = document.getElementById("game-earth-ascii");
+      if (earthAscii) earthAscii.textContent = earthFrame(earthOffset);
+      var moonAscii = document.getElementById("game-moon-ascii");
+      if (moonAscii)
+        moonAscii.textContent = moonFrame(getMoonStage(state), beaconOn);
+    }, 700);
+  }
+
   /* ---- Init ----------------------------------------------------- */
   function init() {
     var state = loadState();
+
+    // Dev/preview hook: ?jz=N seeds N astronauts + auto-unlocks the
+    // moonbase/game upgrades below that count (handles stay earned).
+    var seed = location.search.match(/[?&]jz=(\d+)/);
+    if (seed) {
+      state.astronauts = parseInt(seed[1], 10);
+      state.unlockedUpgrades = [];
+      for (var s = 0; s < UPGRADES.length; s++) {
+        var u = UPGRADES[s];
+        if (
+          (u.type === "moonbase" || u.type === "game") &&
+          u.threshold <= state.astronauts
+        ) {
+          state.unlockedUpgrades.push(u.id);
+        }
+      }
+    }
+
     injectGameLayer();
     updateMoonDisplay(state);
     applyUnlocks(state);
@@ -656,8 +830,19 @@
       if (discoAudio) discoAudio.pause();
     });
 
+    document
+      .getElementById("game-earth")
+      .addEventListener("click", function () {
+        if (rocketInFlight) {
+          showNotification("rocket already in flight…");
+          return;
+        }
+        launchRocket(state);
+      });
+
     initPageSwap(state);
     startLoop(state);
+    startAmbient(state);
   }
 
   if (document.readyState === "loading") {
