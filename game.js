@@ -186,44 +186,45 @@
 
   // Each stage is a list of lines; #game-moon pre centers every line, so the
   // oval comes from symmetric line widths. Stages 1+ get a beacon that blinks.
-  // Line widths taper toward both poles (7 rows, widest in the middle) so
-  // the centered rendering reads as a circle, not a box.
+  // Every line is exactly 17 chars (space-padded), so the centered <pre>
+  // can't shuffle rows horizontally — base structures stay on one axis.
+  // The circle comes from where the parens sit inside the fixed grid.
   var MOON_BODIES = [
     [
-      "(  .  )",
-      "(  o    .  )",
-      "( .    o    . )",
-      "(  .     o   . )",
-      "( .    o    . )",
-      "(  .    o  )",
-      "(  o  )",
+      "    (   .   )    ",
+      "  ( o    .    )  ",
+      "(  .    o     . )",
+      "( .     o     . )",
+      "(  .     o    . )",
+      "  ( .     o   )  ",
+      "    (   o   )    ",
     ],
     [
-      "( [o] )",
-      "(  o    .  )",
-      "( .    o    . )",
-      "(  .     o   . )",
-      "( .    o    . )",
-      "(  .    o  )",
-      "(  o  )",
+      "     ( [o] )     ",
+      "  ( o    .    )  ",
+      "(  .    o     . )",
+      "( .     o     . )",
+      "(  .     o    . )",
+      "  ( .     o   )  ",
+      "    (   o   )    ",
     ],
     [
-      "( [o__o] )",
-      "( [====]   . )",
-      "( .    o    . )",
-      "(  .     o   . )",
-      "( .    o    . )",
-      "(  .    o  )",
-      "(  o  )",
+      "   ( [o__o] )    ",
+      "  ( [======] )   ",
+      "(  .    o     . )",
+      "( .     o     . )",
+      "(  .     o    . )",
+      "  ( .     o   )  ",
+      "    (   o   )    ",
     ],
     [
-      "( [o__o] )",
-      "( [======] )",
-      "( |______|  . )",
-      "(  .     o   . )",
-      "( .    o    . )",
-      "(  .    o  )",
-      "(  o  )",
+      "   ( [o__o] )    ",
+      "  ( [======] )   ",
+      "(  |________| . )",
+      "( .     o     . )",
+      "(  .     o    . )",
+      "  ( .     o   )  ",
+      "    (   o   )    ",
     ],
   ];
 
