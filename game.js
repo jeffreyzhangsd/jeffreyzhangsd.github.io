@@ -190,28 +190,32 @@
   // can't shuffle rows horizontally. The moon circle is identical at every
   // stage; base structures stack ON the surface above it, beacon on top.
   var MOON_CIRCLE = [
-    "    (   .   )    ",
-    "  (  o    .   )  ",
-    " (  .    o    . )",
-    "( .     o     . )",
-    " ( .     o    . )",
-    "  ( .     o   )  ",
-    "    (   o   )    ",
+    "    (  .    o   )    ",
+    "  (  o     .      )  ",
+    " ( .     o       . ) ",
+    "(  .      o       . )",
+    " ( .      o      . ) ",
+    "  (  .     o      )  ",
+    "    (    o      )    ",
   ];
 
   var MOON_STRUCTURES = [
     [],
-    ["       [o]       "],
-    ["     [o__o]      ", "    [======]     "],
-    ["     [o__o]      ", "    [======]     ", "   |________|    "],
+    ["         [o]         "],
+    ["       [o__o]        ", "      [======]       "],
+    [
+      "       [o__o]        ",
+      "      [======]       ",
+      "     |________|      ",
+    ],
   ];
 
   function moonFrame(stage, beaconOn) {
     if (stage === 0) return MOON_CIRCLE.join("\n");
     var beacon = beaconOn ? "*" : "·";
     var lines = [
-      "        " + beacon + "        ",
-      "        |        ",
+      "          " + beacon + "          ",
+      "          |          ",
     ].concat(MOON_STRUCTURES[stage], MOON_CIRCLE);
     return lines.join("\n");
   }
