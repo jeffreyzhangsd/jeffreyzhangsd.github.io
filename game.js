@@ -199,14 +199,16 @@
     "    (    o      )    ",
   ];
 
+  // Structure widths are odd (5/7/9) so they center exactly on the odd
+  // 21-char grid — even widths sit half a char off-axis.
   var MOON_STRUCTURES = [
     [],
     ["         [o]         "],
-    ["       [o__o]        ", "      [======]       "],
+    ["        [o_o]        ", "       [=====]       "],
     [
-      "       [o__o]        ",
-      "      [======]       ",
-      "     |________|      ",
+      "        [o_o]        ",
+      "       [=====]       ",
+      "      |_______|      ",
     ],
   ];
 
