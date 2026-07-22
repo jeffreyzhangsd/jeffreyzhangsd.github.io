@@ -1,9 +1,36 @@
 /* ---- Game Layer ------------------------------------------------- */
 
-@media (max-width: 768px) {
-  #game-layer {
-    display: none;
+/* Art palette — warm two-tone earth, warm-gray moon, ember beacon.
+   Defined per theme so the ASCII art follows the toggle like the rest
+   of the site. */
+:root {
+  --game-sea: #4a6a55;
+  --game-land: #b99a6b;
+  --game-moon: #7d756b;
+  --game-structure: #a89c8e;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --game-sea: #3f6b4f;
+    --game-land: #a3763d;
+    --game-moon: #8a8074;
+    --game-structure: #6b6156;
   }
+}
+
+[data-theme="light"] {
+  --game-sea: #3f6b4f;
+  --game-land: #a3763d;
+  --game-moon: #8a8074;
+  --game-structure: #6b6156;
+}
+
+[data-theme="dark"] {
+  --game-sea: #4a6a55;
+  --game-land: #b99a6b;
+  --game-moon: #7d756b;
+  --game-structure: #a89c8e;
 }
 
 #game-layer {
@@ -19,15 +46,16 @@
   position: fixed;
   bottom: 30px;
   left: 30px;
-  color: #3a5a3a;
+  color: var(--game-sea);
   line-height: 1.2;
   user-select: none;
   pointer-events: auto;
   cursor: pointer;
 }
 
+/* spans carry their own colors, so hover brightens the whole globe */
 #game-earth:hover {
-  color: #4d774d;
+  filter: brightness(1.25);
 }
 
 #game-earth pre {
@@ -35,8 +63,12 @@
   font-size: 13px;
 }
 
+#game-earth-ascii .land {
+  color: var(--game-land);
+}
+
 #game-launchpad {
-  color: #666;
+  color: var(--text-muted);
   text-align: center;
   margin-bottom: 1px;
   line-height: 1.1;
@@ -47,11 +79,25 @@
   position: fixed;
   top: 30px;
   right: 30px;
-  color: #6a6a6a;
+  color: var(--game-moon);
   user-select: none;
   width: 200px;
   padding-right: 20px;
   box-sizing: border-box;
+}
+
+#game-moon-ascii .structure {
+  color: var(--game-structure);
+}
+
+#game-moon-ascii .beacon {
+  color: var(--accent);
+}
+
+/* during disco the parent <pre> gets inline flash colors — let the
+   art spans inherit them instead of holding their palette */
+.disco-active #game-layer span {
+  color: inherit;
 }
 
 #game-moon pre {
@@ -235,7 +281,7 @@
 }
 
 #game-moon-counter {
-  color: #888;
+  color: var(--text-muted);
   font-size: 10px;
   letter-spacing: 1px;
   margin-top: 6px;
@@ -285,23 +331,73 @@
   }
 }
 
-/* game layer is hidden on mobile — a readout for an invisible game is noise */
-@media (max-width: 768px) {
-  #game-status {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   #game-status-beacon {
     animation: none;
   }
 }
 
+/* ---- Mobile ------------------------------------------------------ */
+/* Below 768px the viewport corners are gone: earth and moon leave
+   their fixed positions and form a strip below the card. Rockets
+   still arc between them via getBoundingClientRect. */
+@media (max-width: 768px) {
+  #game-layer {
+    position: static;
+    inset: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 92vw;
+    max-width: 480px;
+    margin: 18px auto 40px;
+  }
+
+  /* controls leave their fixed viewport corners (they'd collide with
+     the strip) and wrap onto their own right-aligned rows below it */
+  #game-disco-btn,
+  #game-disco-volume,
+  #game-reset-btn {
+    position: static;
+    flex-basis: 100%;
+    text-align: right;
+    margin-top: 12px;
+  }
+
+  #game-disco-volume {
+    max-width: 120px;
+    margin-left: auto;
+  }
+
+  #game-earth,
+  #game-moon {
+    position: static;
+  }
+
+  #game-earth pre {
+    font-size: 10px;
+  }
+
+  #game-moon {
+    width: auto;
+    padding-right: 0;
+  }
+
+  #game-moon pre {
+    font-size: 9px;
+  }
+
+  #game-upgrade-btn {
+    font-size: 10px;
+    line-height: 1.6;
+  }
+}
+
 /* ---- Rocket (in-flight) ---------------------------------------- */
 .game-rocket {
   position: fixed;
-  color: #888;
+  color: var(--accent);
   font-family: monospace;
   font-size: 13px;
   pointer-events: none;
@@ -312,7 +408,7 @@
 
 .game-trail {
   position: fixed;
-  color: #666;
+  color: var(--accent);
   font-family: monospace;
   font-size: 10px;
   pointer-events: none;

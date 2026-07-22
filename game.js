@@ -167,11 +167,18 @@
     return s.slice(k) + s.slice(0, k);
   }
 
-  function earthFrame(off) {
-    var a = rotStr(EARTH_MAP[0], off).slice(0, 7);
-    var b = rotStr(EARTH_MAP[1], off).slice(0, 9);
-    var c = rotStr(EARTH_MAP[2], off).slice(0, 9);
-    var d = rotStr(EARTH_MAP[3], off).slice(0, 7);
+  // Land dots get a warm span; ~ (sea) and the frame border keep the
+  // element's base color. Spans are added AFTER slicing so the visible
+  // window width stays exact.
+  function landSpans(s) {
+    return s.replace(/\./g, '<span class="land">.</span>');
+  }
+
+  function earthFrameHTML(off) {
+    var a = landSpans(rotStr(EARTH_MAP[0], off).slice(0, 7));
+    var b = landSpans(rotStr(EARTH_MAP[1], off).slice(0, 9));
+    var c = landSpans(rotStr(EARTH_MAP[2], off).slice(0, 9));
+    var d = landSpans(rotStr(EARTH_MAP[3], off).slice(0, 7));
     return [
       "  .-------.",
       " / " + a + " \\",
@@ -212,13 +219,18 @@
     ],
   ];
 
-  function moonFrame(stage, beaconOn) {
+  function moonFrameHTML(stage, beaconOn) {
     if (stage === 0) return MOON_CIRCLE.join("\n");
     var beacon = beaconOn ? "*" : "·";
     var lines = [
-      "          " + beacon + "          ",
-      "          |          ",
-    ].concat(MOON_STRUCTURES[stage], MOON_CIRCLE);
+      '          <span class="beacon">' + beacon + "</span>          ",
+      '<span class="structure">          |          </span>',
+    ].concat(
+      MOON_STRUCTURES[stage].map(function (l) {
+        return '<span class="structure">' + l + "</span>";
+      }),
+      MOON_CIRCLE,
+    );
     return lines.join("\n");
   }
 
@@ -302,7 +314,8 @@
     var earth = makeEl("div", "game-earth");
     earth.title = "launch a rocket";
     var launchpad = makeEl("pre", "game-launchpad", LAUNCHPAD_ASCII);
-    var earthAscii = makeEl("pre", "game-earth-ascii", earthFrame(0));
+    var earthAscii = makeEl("pre", "game-earth-ascii");
+    earthAscii.innerHTML = earthFrameHTML(0);
     earth.appendChild(launchpad);
     earth.appendChild(earthAscii);
 
@@ -358,7 +371,7 @@
     var moonAscii = document.getElementById("game-moon-ascii");
     var moonCounter = document.getElementById("game-moon-counter");
     if (!moonAscii || !moonCounter) return;
-    moonAscii.textContent = moonFrame(getMoonStage(state), beaconOn);
+    moonAscii.innerHTML = moonFrameHTML(getMoonStage(state), beaconOn);
     var n = state.astronauts;
     moonCounter.textContent =
       n === 0
@@ -477,6 +490,9 @@
   function startDisco() {
     if (discoActive) return;
     discoActive = true;
+    // lets CSS force the art's sea/land/structure spans to inherit the
+    // disco colors painted on their parent <pre>
+    document.body.classList.add("disco-active");
     refreshDiscoCache();
     var discoBtn = document.getElementById("game-disco-btn");
     if (discoBtn) {
@@ -498,6 +514,7 @@
   function stopDisco() {
     if (!discoActive) return;
     discoActive = false;
+    document.body.classList.remove("disco-active");
     clearInterval(discoInterval);
     discoInterval = null;
     document.body.style.backgroundColor = "";
@@ -820,10 +837,10 @@
       earthOffset += 1;
       beaconOn = !beaconOn;
       var earthAscii = document.getElementById("game-earth-ascii");
-      if (earthAscii) earthAscii.textContent = earthFrame(earthOffset);
+      if (earthAscii) earthAscii.innerHTML = earthFrameHTML(earthOffset);
       var moonAscii = document.getElementById("game-moon-ascii");
       if (moonAscii)
-        moonAscii.textContent = moonFrame(getMoonStage(state), beaconOn);
+        moonAscii.innerHTML = moonFrameHTML(getMoonStage(state), beaconOn);
     }, 700);
   }
 

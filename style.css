@@ -376,6 +376,19 @@ html.theme-ripple::view-transition-new(root) {
   }
 }
 
+/* ── Mobile ─────────────────────────────────────────────────── */
+/* stack card + game strip; the game layer becomes flow content
+   below the container (see game.css) */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  .container {
+    margin-top: 24px;
+  }
+}
+
 /* kill the whole layer for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   #backdrop {
