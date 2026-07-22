@@ -923,6 +923,17 @@
       if (discoVol && !MOBILE_MQ.matches) discoVol.style.display = "block";
     }
 
+    // visibility is otherwise only decided at init/unlock time — resizing
+    // across the mobile breakpoint must re-sync the slider without a refresh
+    if (MOBILE_MQ.addEventListener) {
+      MOBILE_MQ.addEventListener("change", function (e) {
+        var vol = document.getElementById("game-disco-volume");
+        if (!vol) return;
+        var unlocked = state.unlockedUpgrades.indexOf("disco") !== -1;
+        vol.style.display = unlocked && !e.matches ? "block" : "none";
+      });
+    }
+
     // Pause music on tab close so backgrounded autoplay doesn't keep playing.
     window.addEventListener("beforeunload", function () {
       if (discoAudio) discoAudio.pause();
