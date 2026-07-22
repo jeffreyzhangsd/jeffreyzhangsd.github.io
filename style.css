@@ -1,49 +1,53 @@
 /* ── Theme tokens ──────────────────────────────────────────── */
 
-/* Dark — default */
+/* Dark — default (warm-signal: warm-biased neutrals + one ember accent) */
 :root {
-  --bg: #0d0d0d;
-  --container-bg: #141414;
-  --border: #2a2a2a;
-  --divider: #262626;
-  --text-primary: #c8c8c8;
-  --text-secondary: #999;
-  --text-muted: #808080;
+  --bg: #141110;
+  --container-bg: #1a1614;
+  --border: #33291f;
+  --divider: #2b2420;
+  --text-primary: #d8cec2;
+  --text-secondary: #a09488;
+  --text-muted: #7a6f64;
+  --accent: #e0a370;
 }
 
 /* Auto mode: follow system when no data-theme set */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    --bg: #f2f2f0;
-    --container-bg: #ebebea;
-    --border: #d0d0ce;
-    --divider: #dededc;
-    --text-primary: #333;
-    --text-secondary: #666;
-    --text-muted: #595959;
+    --bg: #f2efe9;
+    --container-bg: #ece7de;
+    --border: #d2c7b8;
+    --divider: #ded5c8;
+    --text-primary: #35302a;
+    --text-secondary: #675e52;
+    --text-muted: #82786a;
+    --accent: #a3763d;
   }
 }
 
 /* Explicit light */
 [data-theme="light"] {
-  --bg: #f2f2f0;
-  --container-bg: #ebebea;
-  --border: #d0d0ce;
-  --divider: #dededc;
-  --text-primary: #333;
-  --text-secondary: #666;
-  --text-muted: #595959;
+  --bg: #f2efe9;
+  --container-bg: #ece7de;
+  --border: #d2c7b8;
+  --divider: #ded5c8;
+  --text-primary: #35302a;
+  --text-secondary: #675e52;
+  --text-muted: #82786a;
+  --accent: #a3763d;
 }
 
 /* Explicit dark (overrides system light preference) */
 [data-theme="dark"] {
-  --bg: #0d0d0d;
-  --container-bg: #141414;
-  --border: #2a2a2a;
-  --divider: #262626;
-  --text-primary: #c8c8c8;
-  --text-secondary: #999;
-  --text-muted: #808080;
+  --bg: #141110;
+  --container-bg: #1a1614;
+  --border: #33291f;
+  --divider: #2b2420;
+  --text-primary: #d8cec2;
+  --text-secondary: #a09488;
+  --text-muted: #7a6f64;
+  --accent: #e0a370;
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -127,6 +131,13 @@ body {
   margin-top: 4px;
 }
 
+/* warm-signal: the accent appears in three places — subtitle dot,
+   link arrows, and link hovers. Nothing else gets color. */
+.subtitle .dot,
+.arrow {
+  color: var(--accent);
+}
+
 /* ── Sections ───────────────────────────────────────────────── */
 .section,
 .contact-item {
@@ -179,7 +190,7 @@ a:focus-visible {
 }
 
 .section-link:hover {
-  color: var(--text-secondary);
+  color: var(--accent);
 }
 
 /* ── Back nav ───────────────────────────────────────────────── */
@@ -192,7 +203,7 @@ a:focus-visible {
 }
 
 .back-nav:hover {
-  color: var(--text-secondary);
+  color: var(--accent);
 }
 
 /* ── Project list ───────────────────────────────────────────── */
@@ -238,7 +249,7 @@ a:focus-visible {
 }
 
 .project-link:hover {
-  color: var(--text-primary);
+  color: var(--accent);
 }
 
 /* ── Contact items ──────────────────────────────────────────── */
@@ -248,7 +259,7 @@ a:focus-visible {
 }
 
 .contact-item a:hover {
-  color: var(--text-primary);
+  color: var(--accent);
 }
 
 /* ── Motion layer (2026 revamp) ─────────────────────────────── */

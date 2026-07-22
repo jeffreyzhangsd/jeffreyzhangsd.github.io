@@ -392,6 +392,40 @@
     return LAUNCH_EVERY_N_TICKS;
   }
 
+  /* ---- Status line ---------------------------------------------- */
+  // In-container mission readout: beacon, astronaut count, launch countdown.
+  // Injected by JS (and re-injected after page swaps, which replace the
+  // container's children). aria-hidden: it repaints every second and the
+  // same numbers live in the moon counter.
+  function ensureStatusLine() {
+    if (document.getElementById("game-status")) return;
+    var container = document.querySelector(".container");
+    if (!container) return;
+    var status = makeEl("div", "game-status");
+    status.setAttribute("aria-hidden", "true");
+    var sys = makeEl("span");
+    sys.appendChild(makeEl("span", "game-status-beacon", "●"));
+    sys.appendChild(document.createTextNode(" systems nominal"));
+    status.appendChild(sys);
+    status.appendChild(makeEl("span", "game-status-crew"));
+    status.appendChild(makeEl("span", "game-status-next"));
+    container.appendChild(status);
+  }
+
+  function updateStatusLine(state) {
+    var crew = document.getElementById("game-status-crew");
+    var next = document.getElementById("game-status-next");
+    if (!crew || !next) return;
+    crew.textContent = "astronauts aboard: " + state.astronauts;
+    if (rocketInFlight) {
+      next.textContent = "rocket in flight";
+    } else {
+      var every = launchEveryTicks(state);
+      var t = every - (tickCount % every);
+      next.textContent = "next launch: T−" + t + "s";
+    }
+  }
+
   /* ---- Notification -------------------------------------------- */
   var notifTimeout = null;
 
@@ -602,6 +636,7 @@
     saveState(state);
     updateMoonDisplay(state);
     updateUpgradeButton(state);
+    updateStatusLine(state);
     var launchpad = document.getElementById("game-launchpad");
     if (launchpad) launchpad.style.visibility = "visible";
     var discoBtn = document.getElementById("game-disco-btn");
@@ -623,6 +658,7 @@
 
     var launchpad = document.getElementById("game-launchpad");
     if (launchpad) launchpad.style.visibility = "hidden";
+    updateStatusLine(state);
 
     var earthEl = document.getElementById("game-earth");
     var moonEl = document.getElementById("game-moon");
@@ -690,6 +726,7 @@
     updateMoonDisplay(state);
     pulseCounter();
     updateUpgradeButton(state);
+    updateStatusLine(state);
     saveState(state);
 
     var launchpad = document.getElementById("game-launchpad");
@@ -722,6 +759,8 @@
         window.scrollTo(0, 0);
         if (typeof window._themeInit === "function") window._themeInit();
         applyUnlocks(state);
+        ensureStatusLine();
+        updateStatusLine(state);
         if (discoActive) refreshDiscoCache();
       })
       .catch(function () {
@@ -768,6 +807,7 @@
       if (tickCount % launchEveryTicks(state) === 0) {
         launchRocket(state);
       }
+      updateStatusLine(state);
     }, TICK_MS);
   }
 
@@ -812,6 +852,8 @@
     updateMoonDisplay(state);
     applyUnlocks(state);
     updateUpgradeButton(state);
+    ensureStatusLine();
+    updateStatusLine(state);
 
     document
       .getElementById("game-upgrade-btn")
