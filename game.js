@@ -257,6 +257,12 @@
   /* ---- Disco audio ---------------------------------------------- */
   var DISCO_AUDIO_SRC = "/static/media/showtime.mp3";
   var DISCO_VOLUME_KEY = "game-disco-volume";
+  // iOS ignores HTMLMediaElement.volume (hardware buttons only), so the
+  // slider is useless on phones. Mobile instead hides the slider and pins
+  // a quiet fixed level through a Web Audio gain node, which iOS honors.
+  var MOBILE_MQ = window.matchMedia("(max-width: 768px)");
+  var MOBILE_DISCO_GAIN = 0.12;
+  var discoGainWired = false;
   var discoAudio = null;
   var discoVolume = (function () {
     try {
@@ -276,8 +282,27 @@
       discoAudio.loop = true;
       discoAudio.preload = "auto";
     }
-    discoAudio.volume = discoVolume * discoVolume;
+    // once the mobile gain path is wired, the gain node owns loudness;
+    // element volume stays 1 so Android and iOS end up equally quiet
+    discoAudio.volume = discoGainWired ? 1 : discoVolume * discoVolume;
     return discoAudio;
+  }
+
+  function wireQuietMobileGain() {
+    if (discoGainWired || !MOBILE_MQ.matches) return;
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    try {
+      var ctx = new Ctx();
+      var src = ctx.createMediaElementSource(discoAudio);
+      var gain = ctx.createGain();
+      gain.gain.value = MOBILE_DISCO_GAIN;
+      src.connect(gain);
+      gain.connect(ctx.destination);
+      if (ctx.state === "suspended") ctx.resume();
+      discoGainWired = true;
+      discoAudio.volume = 1;
+    } catch (_) {}
   }
 
   /* ---- State ---------------------------------------------------- */
@@ -503,6 +528,7 @@
     // IS that gesture, so this should succeed when user clicks. .catch() swallows
     // the rare blocked case so we don't break disco visuals.
     var audio = getDiscoAudio();
+    wireQuietMobileGain();
     audio.currentTime = 0;
     var p = audio.play();
     if (p && typeof p.catch === "function") p.catch(function () {});
@@ -637,7 +663,7 @@
       var discoBtn = document.getElementById("game-disco-btn");
       if (discoBtn) discoBtn.style.display = "block";
       var discoVol = document.getElementById("game-disco-volume");
-      if (discoVol) discoVol.style.display = "block";
+      if (discoVol && !MOBILE_MQ.matches) discoVol.style.display = "block";
     }
     saveState(state);
     updateUpgradeButton(state);
@@ -894,7 +920,7 @@
     if (state.unlockedUpgrades.indexOf("disco") !== -1) {
       document.getElementById("game-disco-btn").style.display = "block";
       var discoVol = document.getElementById("game-disco-volume");
-      if (discoVol) discoVol.style.display = "block";
+      if (discoVol && !MOBILE_MQ.matches) discoVol.style.display = "block";
     }
 
     // Pause music on tab close so backgrounded autoplay doesn't keep playing.
