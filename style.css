@@ -3,7 +3,7 @@
 /* Dark — default (warm-signal: warm-biased neutrals + one ember accent) */
 :root {
   --bg: #141110;
-  --container-bg: #1a1614;
+  --container-bg: rgba(26, 22, 20, 0.8);
   --border: #33291f;
   --divider: #2b2420;
   --text-primary: #d8cec2;
@@ -16,7 +16,7 @@
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
     --bg: #f2efe9;
-    --container-bg: #ece7de;
+    --container-bg: rgba(236, 231, 222, 0.84);
     --border: #d2c7b8;
     --divider: #ded5c8;
     --text-primary: #35302a;
@@ -29,7 +29,7 @@
 /* Explicit light */
 [data-theme="light"] {
   --bg: #f2efe9;
-  --container-bg: #ece7de;
+  --container-bg: rgba(236, 231, 222, 0.84);
   --border: #d2c7b8;
   --divider: #ded5c8;
   --text-primary: #35302a;
@@ -41,7 +41,7 @@
 /* Explicit dark (overrides system light preference) */
 [data-theme="dark"] {
   --bg: #141110;
-  --container-bg: #1a1614;
+  --container-bg: rgba(26, 22, 20, 0.8);
   --border: #33291f;
   --divider: #2b2420;
   --text-primary: #d8cec2;

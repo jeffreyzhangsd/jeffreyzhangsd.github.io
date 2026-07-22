@@ -416,10 +416,7 @@
     if (!container) return;
     var status = makeEl("div", "game-status");
     status.setAttribute("aria-hidden", "true");
-    var sys = makeEl("span");
-    sys.appendChild(makeEl("span", "game-status-beacon", "●"));
-    sys.appendChild(document.createTextNode(" systems nominal"));
-    status.appendChild(sys);
+    status.appendChild(makeEl("span", "game-status-beacon", "●"));
     status.appendChild(makeEl("span", "game-status-crew"));
     status.appendChild(makeEl("span", "game-status-next"));
     container.appendChild(status);
@@ -429,7 +426,7 @@
     var crew = document.getElementById("game-status-crew");
     var next = document.getElementById("game-status-next");
     if (!crew || !next) return;
-    crew.textContent = "astronauts aboard: " + state.astronauts;
+    crew.textContent = "astronauts: " + state.astronauts;
     if (rocketInFlight) {
       next.textContent = "rocket in flight";
     } else {
