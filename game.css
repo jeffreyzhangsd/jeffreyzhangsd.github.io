@@ -51,6 +51,8 @@
   user-select: none;
   pointer-events: auto;
   cursor: pointer;
+  /* rapid launch-tapping must not trigger iOS double-tap zoom */
+  touch-action: manipulation;
 }
 
 /* spans carry their own colors, so hover brightens the whole globe */
@@ -109,6 +111,7 @@
 
 #game-upgrade-btn {
   display: none;
+  touch-action: manipulation;
   margin-top: 10px;
   color: #d8d8d8;
   font-size: 11px;
@@ -342,13 +345,16 @@
    their fixed positions and form a strip below the card. Rockets
    still arc between them via getBoundingClientRect. */
 @media (max-width: 768px) {
+  /* flex-start anchors the art at the strip's TOP: the upgrade button,
+     notif, and counter grow downward into empty page instead of pushing
+     the moon around, and rocket endpoints (rect.top) stay fixed */
   #game-layer {
     position: static;
     inset: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
     width: 92vw;
     max-width: 480px;
     margin: 18px auto 40px;
@@ -379,8 +385,10 @@
     font-size: 10px;
   }
 
+  /* fixed width: the column must not resize with the upgrade button's
+     text, or the centered art slides horizontally */
   #game-moon {
-    width: auto;
+    width: 150px;
     padding-right: 0;
   }
 

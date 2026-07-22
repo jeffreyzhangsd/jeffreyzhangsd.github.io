@@ -380,8 +380,11 @@ html.theme-ripple::view-transition-new(root) {
 /* stack card + game strip; the game layer becomes flow content
    below the container (see game.css) */
 @media (max-width: 768px) {
+  /* flex-start: vertical centering would re-center the whole page
+     every time the game strip's height changes */
   body {
     flex-direction: column;
+    justify-content: flex-start;
   }
 
   .container {
