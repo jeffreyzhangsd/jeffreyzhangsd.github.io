@@ -269,6 +269,37 @@ a:focus-visible {
   margin-left: 6px;
 }
 
+/* collapsed tail — older items live inside a native <details> */
+.more summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 10px 0;
+  border-top: 1px solid var(--divider);
+}
+
+.more summary::-webkit-details-marker {
+  display: none;
+}
+
+.more summary:hover {
+  color: var(--accent);
+}
+
+.more .more-hide {
+  display: none;
+}
+
+.more[open] .more-show {
+  display: none;
+}
+
+.more[open] .more-hide {
+  display: inline;
+}
+
 .project-link:hover {
   color: var(--accent);
 }
